@@ -28,19 +28,36 @@ return [
     ],
 
     'registration' => [
-
+        'success' => 'Registration Successful',
+        'failed'  => 'Registration Faild',
+        'invalid' => 'Unable to Register, please try again...'
     ],
 
     'login' => [
-
+        'success' => 'Login Successful',
+        'failed'  => 'Login Faild',
+        'not-found' => 'User Not Found, Please Register First...',
+        'invalid' => 'Password Does Not Match!',
+        'inactive' => 'Account blocked by Admin',
+        'not-verified' => 'Email not Verified, please verify it firts...'
     ],
 
-    'forget-password' => [
-
+    'reset-password' => [
+        'success' => 'Password Reset Successfully',
+        'failed'  => 'Unable to Reset Password, please try again...',
+        'not-found' => 'User Not Found, Please Register First...',
+        'invalid' => 'OTP Does Not Match!',
+        'inactive' => 'Account blocked by Admin',
+        'email-sent' => 'Reset Password OTP Sent on Registered Email'
     ],
 
     'change-password' => [
-
+        'success' => 'Password Updated Successfully',
+        'failed'  => 'Unable to update Password, please try again...',
+        'not-found' => 'User Not Found, Please Register First...',
+        'invalid' => 'Old Password Does Not Match!',
+        'inactive' => 'Account blocked by Admin',
+        'not-verified' => 'Email not Verified, please verify it firts...'
     ],
 
     'add' => [

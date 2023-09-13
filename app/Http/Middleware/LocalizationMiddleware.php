@@ -18,24 +18,27 @@ class LocalizationMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // $request->validate([
-        //     'X-localization' => ['required', Rule::in(['en','hi','ur','bn','ar','in','ms','tr','fa','fr','de','es']),],
-        // ]);
-
-        $validator = Validator::make($request->all(), [
-            'X-localization' => ['required', Rule::in(['en','hi','ur','bn','ar','in','ms','tr','fa','fr','de','es']),],
-        ]);
-
-        if($validator->fails()){
+        if (!$request->hasHeader('X-localization')) {
             return response()->json([
                 'status'    => 'failed',
-                'message'   => __('msg.validation'),
-                'errors'    => $validator->errors()
+                'message'   => trans('msg.localization.required'),
+            ],400);
+        }
+
+        // Get the 'X-localization' header value
+        $local = $request->header('X-localization');
+
+        // Validate the localization value
+        $allowedLocales = ['en', 'fr', 'es']; // Add the allowed locales here
+        if (!in_array($local, $allowedLocales)) {
+            return response()->json([
+                'status'    => 'failed',
+                'message'   => trans('msg.localization.invalid'),
             ],400);
         }
 
         // Check header request and determine localizaton
-        $local = ($request->hasHeader('X-localization')) ? (strlen($request->header('X-localization'))>0?$request->header('X-localization'): 'en'): 'en';
+        $local = ($request->hasHeader('X-localization')) ? (strlen($request->header('X-localization')) > 0 ? $request->header('X-localization'): 'en'): 'en';
 
         // set laravel localization
         App::setLocale($local);

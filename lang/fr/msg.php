@@ -15,8 +15,13 @@ return [
 
     'validation' => 'Validation Failed!',
 
+    'localization' => [
+        'invalid' => 'Invalid Language Selected!',
+        'required' => 'X-localization header is required'
+    ],
+    
     'jwt' => [
-        
+
     ],
 
     'registration' => [

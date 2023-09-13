@@ -21,7 +21,10 @@ return [
     ],
     
     'jwt' => [
-
+        'TokenNotSet' => 'Bearer Token Not Set',
+        'InvalidToken' => 'Invalid Bearer Token',
+        'expiredToken' => 'Token Expired!',
+        'TokenNotFound' => 'Token Not Found'
     ],
 
     'registration' => [

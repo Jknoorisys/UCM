@@ -19,7 +19,7 @@ Route::middleware(['localization'])->group(function () {
 
     // Admin Panel APIs
     Route::prefix('admin')->group(function () {
-        Route::post('login' , [AdminAuthController::class, 'login'])->name('admin.login');
+        Route::post('login' , [AdminAuthController::class, 'login']);
     });
 
 

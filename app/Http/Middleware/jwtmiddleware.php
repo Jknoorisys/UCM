@@ -36,6 +36,7 @@ class JWTmiddleware
                 Response::HTTP_UNAUTHORIZED
             );
         }
+        
         try {
             $user                  =  JWTAuth::parseToken()->getPayload();
             $request->uuid         =  $user['uuid'];

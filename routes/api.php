@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\AdminAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,3 +14,13 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::middleware(['localization'])->group(function () {
+
+    // Admin Panel APIs
+    Route::prefix('admin')->group(function () {
+        Route::post('login' , [AdminAuthController::class, 'login'])->name('admin.login');
+    });
+
+
+});

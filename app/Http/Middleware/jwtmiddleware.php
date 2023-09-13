@@ -45,35 +45,34 @@ class JWTmiddleware
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
 
                 return response()->json(
-                            [
-                                'status'       =>  "failed2",
-                                'errors'       =>  "",
-                                'message'      =>  trans('msg.jwt.InvalidToken'),
-                            ],
-                            Response::HTTP_UNAUTHORIZED
+                    [
+                        'status'       =>  "failed2",
+                        'errors'       =>  "",
+                        'message'      =>  trans('msg.jwt.InvalidToken'),
+                    ],
+                    Response::HTTP_UNAUTHORIZED
                 );
 
-            }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
+            } elseif($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
 
                 return response()->json(
-                            [
-                                'status'       =>  "failed3",
-                                'errors'       =>  "",
-                                'message'      =>  trans('msg.jwt.expiredToken'),
-                            ],
-                            Response::HTTP_UNAUTHORIZED
+                    [
+                        'status'       =>  "failed3",
+                        'errors'       =>  "",
+                        'message'      =>  trans('msg.jwt.expiredToken'),
+                    ],
+                    Response::HTTP_UNAUTHORIZED
                 );
 
-            }else{
+            } else {
                 return response()->json(
-                            [
-                                'status'       =>  "failed4",
-                                'errors'       =>  "",
-                                'message'      =>  trans('msg.jwt.TokenNotFound'),
-                            ],
-                            Response::HTTP_BAD_REQUEST
+                    [
+                        'status'       =>  "failed4",
+                        'errors'       =>  "",
+                        'message'      =>  trans('msg.jwt.TokenNotFound'),
+                    ],
+                    Response::HTTP_BAD_REQUEST
                 );
-
             }
         }
 

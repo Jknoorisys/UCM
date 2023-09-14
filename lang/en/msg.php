@@ -15,6 +15,36 @@ return [
 
     'validation' => 'Validation Failed!',
 
+    'error' => 'Something went wrong, please try again ...',
+
+    'email' => [
+        'mailverification' => 'Email Verification',
+        'Dear' => 'Dear',
+        'registerus' => 'Registered with us!',
+        'otp_msg' => 'Your One time Password to Complete your Registrations is',
+        'resendotp' => 'OTP Resent successfuly',
+        
+    ],
+
+    'forgotpassword' => [
+        'resetpassword' => 'Need to reset your password?',
+        'click' => 'No problem! Just click on the button below and you’ll be on your way.',
+        'forgotpassword' => 'Forgot Password',
+        'eamilsent' => 'Email Sent Successfully',
+        'emailnotsent' => 'Unable to Send Email, Please Try Again',
+        'reset' => 'Password Reset Successfuly!',
+        'notreset' => 'Unable to reset the password',
+        'passnotmatch' => 'Password does not match',
+        'otpnotmatch' => 'Incorrect OTP entered',
+    ],
+
+    'otp' => [
+        'otpver' => 'Registration Successfull!',
+        'failure' => 'Unable to Verify OTP, Please Try Again',
+        'otpnotver' => 'OTP does not match!',
+        
+    ],
+
     'localization' => [
         'invalid' => 'Invalid Language Selected!',
         'required' => 'X-localization header is required'
@@ -29,8 +59,12 @@ return [
 
     'registration' => [
         'success' => 'Registration Successful',
+        'emailver' => 'OTP Sent on Registered Email',
         'failed'  => 'Registration Faild',
-        'invalid' => 'Unable to Register, please try again...'
+        'invalid' => 'Unable to Register, please try again...',
+        'alreadyverify' => 'Email Already Verified',
+        'registerfirst' => 'User Not Found, Please Register First...',
+
     ],
 
     'login' => [
@@ -39,7 +73,9 @@ return [
         'not-found' => 'User Not Found, Please Register First...',
         'invalid' => 'Password Does Not Match!',
         'inactive' => 'Account blocked by Admin',
-        'not-verified' => 'Email not Verified, please verify it firts...'
+        'not-verified' => 'Email not Verified, please verify it firts...',
+        'incmail' => 'Incorrect Email Address',
+        'inactiveuser' => 'User is Inactive',
     ],
 
     'reset-password' => [

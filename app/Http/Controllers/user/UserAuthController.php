@@ -245,12 +245,12 @@ class UserAuthController extends Controller
                             'uuid'  => $user->id
                         );
 
-                        $user->token = $service->getSignedAccessTokenForUser($user, $claims);
+                        $token = $service->getSignedAccessTokenForUser($user, $claims);
                         $currentDate = Carbon::now()->format('Y-m-d');
                         $currentTime = Carbon::now()->format('H:i:s');
 
                         $user_id  = DB::table('users')->where('email', $email)->where('password', $user->password)->take(1)->first();
-                        $user_id->JWT_token = $user->token;
+                        $user_id->JWT_token = $token;
                         return response()->json(
                             [
                                 'status'    => 'success',
@@ -578,6 +578,7 @@ class UserAuthController extends Controller
             $social_type = $request->social_type;
             $social_id = $request->social_id;
             $user  = User::where('email', '=', $email)->first();
+
             if ($user->is_social != '1') {
                  return response()->json([
                         'status'    => 'failed',
@@ -587,9 +588,25 @@ class UserAuthController extends Controller
 
             if (!empty($user)) {
                 if (($social_type == $user->social_type) && ($social_id == $user->social_id)) {
-                     return response()->json([
+                    if ($user->status != 'active') {
+                        return response()->json([
+                               'status'    => 'failed',
+                               'message'   =>  trans('msg.login.inactive'),
+                       ], 400);
+                    }
+
+                    $claims = array(
+                        'exp'   => Carbon::now()->addDays(1)->timestamp,
+                        'uuid'  => $user->id
+                    );
+
+                    $user->JWT_token = $service->getSignedAccessTokenForUser($user, $claims);
+                    $currentDate = Carbon::now()->format('Y-m-d');
+                    $currentTime = Carbon::now()->format('H:i:s');
+
+                    return response()->json([
                             'status'    => 'success',
-                            'message'   =>  trans('msg.login.success'),
+                            'message'   => trans('msg.login.success'),
                             'data'      => $user
                     ], 200);
                 } else {

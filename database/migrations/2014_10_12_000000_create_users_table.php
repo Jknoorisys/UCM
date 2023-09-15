@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->integer('otp');
             $table->string('password');
-            $table->text('JWTtoken');
+            $table->text('JWT_token');
             $table->enum('is_social',['1','0'])->default('0');
             $table->enum('social_type',['google','facebook','apple','manual'])->default('manual');
             $table->string('social_id');

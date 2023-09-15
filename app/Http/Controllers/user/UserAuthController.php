@@ -250,7 +250,8 @@ class UserAuthController extends Controller
                         $currentTime = Carbon::now()->format('H:i:s');
 
                         $user_id  = DB::table('users')->where('email', $email)->where('password', $user->password)->take(1)->first();
-                        $user_id->JWT_token = $token;
+                        $user_id->JWT_token = $user->token;
+                        $userJWToken = user::where('id','=',$user->id)->update(['JWTtoken' => $user->token]);
                         return response()->json(
                             [
                                 'status'    => 'success',

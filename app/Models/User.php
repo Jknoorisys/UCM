@@ -34,6 +34,7 @@ class User extends Authenticatable  implements JWTSubject
         'is_social',
         'social_type',
         'social_id',
+        'JWT_token',
         'status',
         'password',
     ];
@@ -45,6 +46,7 @@ class User extends Authenticatable  implements JWTSubject
      */
     protected $hidden = [
         'password',
+        'JWT_token',
         // 'otp'
     ];
 

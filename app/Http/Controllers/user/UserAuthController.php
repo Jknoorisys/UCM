@@ -602,8 +602,6 @@ class UserAuthController extends Controller
                     );
 
                     $user->JWT_token = $service->getSignedAccessTokenForUser($user, $claims);
-
-                    $user->JWT_token = $user->JWT_token;
                     $user->save();
 
                     $currentDate = Carbon::now()->format('Y-m-d');

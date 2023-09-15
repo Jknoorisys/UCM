@@ -25,11 +25,11 @@ Route::middleware(['localization'])->group(function () {
         Route::post('login' , [AdminAuthController::class, 'login']);
 
         Route::group(['middleware' => 'jwt.verify'], function () {
-        Route::post('changepassword', [AdminProfileController::class, 'changePassword']);
-        Route::post('getProfile', [AdminProfileController::class, 'getProfile']);
-
+            Route::post('changepassword', [AdminProfileController::class, 'changePassword']);
+            Route::post('getProfile', [AdminProfileController::class, 'getProfile']);
         });
     });
+
     Route::prefix('user')->group(function () {
         // By Javeriya Kauser
         Route::post('social-register' , [UserAuthController::class, 'socialRegistration']);
@@ -47,6 +47,4 @@ Route::middleware(['localization'])->group(function () {
             Route::post('getProfile', [UserProfileController::class, 'getProfile']);
         });
     });
-
-
 });

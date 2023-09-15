@@ -16,11 +16,8 @@ class AdminAuthController extends Controller
     public function login(Request $req)
     {
         $validator = Validator::make($req->all(), [
-            
             'email' => 'required|email',
             'password'   => 'required',
-            
-
         ]);
 
         if ($validator->fails()) {
@@ -45,6 +42,7 @@ class AdminAuthController extends Controller
                         'exp'   => Carbon::now()->addDays(1)->timestamp,
                         'uuid'  => $admin->id
                     );
+
                     $admin->JWT_token = $service->getSignedAccessTokenForUser($admin, $claims);
                     
                         return response()->json(
@@ -52,10 +50,7 @@ class AdminAuthController extends Controller
                                 'status'    => 'success',
                                 'data' => $admin,
                                 'message'   =>   __('msg.login.success'),
-                            ],
-                            200
-                        );
-                    
+                            ],200);
                 }else {
                     return response()->json([
                             'status'    => 'failed',
@@ -71,11 +66,12 @@ class AdminAuthController extends Controller
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' =>  __('msg.login.failed'),
+                'message' =>  __('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
     }
+    
     public function changePassword(Request $req)
     {
         $validator = Validator::make($req->all(), [
@@ -111,10 +107,7 @@ class AdminAuthController extends Controller
                                 'status'    => 'success',
                                 'data' => $admin,
                                 'message'   =>   __('msg.change-password.success'),
-                            ],
-                            200
-                        );
-                    
+                            ], 200);
                 }else {
                     return response()->json([
                             'status'    => 'failed',
@@ -130,14 +123,7 @@ class AdminAuthController extends Controller
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' =>  __('msg.change-password.failed'),
-                'error'   => $e->getMessage()
-            ], 500);
-        }
-        catch (\Throwable $e) {
-            return response()->json([
-                'status'  => 'failed',
-                'message' =>  __('msg.login.failed'),
+                'message' =>  __('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }

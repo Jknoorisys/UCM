@@ -108,10 +108,10 @@ class UserAuthController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                    'status'    => 'failed',
-                    'errors'    =>  $validator->errors(),
-                    'message'   => __('msg.validation'),
-                ], 400);
+                'status'    => 'failed',
+                'errors'    =>  $validator->errors(),
+                'message'   => __('msg.validation'),
+            ], 400);
         }
 
         try {
@@ -123,14 +123,14 @@ class UserAuthController extends Controller
                 $verificationCode   =  DB::table('users')->where('otp', '=', $otp)->where('id', '=', $id)->update(['is_verified' => 'yes', 'updated_at' => Carbon::now()]);
                 if ($verificationCode) {
                     return response()->json([
-                            'status'    => 'success',
-                            'message'   =>  __('msg.otp.otpver'),
-                        ], 200);
+                        'status'    => 'success',
+                        'message'   =>  __('msg.otp.otpver'),
+                    ], 200);
                 } else {
                     return response()->json([
-                            'status'    => 'failed',
-                            'message'   =>   __('msg.otp.failure'),
-                        ], 400);
+                        'status'    => 'failed',
+                        'message'   =>   __('msg.otp.failure'),
+                    ], 400);
                 }
             }else{
                 return response()->json([
@@ -147,13 +147,10 @@ class UserAuthController extends Controller
         }
     }
 
-    public function resendregOTP(Request $req)
+    public function resendRegOTP(Request $req)
     {
         $validator = Validator::make($req->all(), [
-            
             'email'   => 'required',
-
-
         ]);
 
         if ($validator->fails()) {
@@ -218,10 +215,8 @@ class UserAuthController extends Controller
     public function login(Request $req)
     {
         $validator = Validator::make($req->all(), [
-            
             'email' => 'required|email',
             'password'   => 'required',
-           
         ]);
 
         if ($validator->fails()) {
@@ -259,17 +254,13 @@ class UserAuthController extends Controller
                                 'status'    => 'success',
                                 'data' => $user_id,
                                 'message'   =>   __('msg.login.success'),
-                            ],
-                            200
-                        );
+                            ],200);
                     } else {
                         return response()->json(
                             [
                                 'status'    => 'failed',
                                 'message'   =>  __('msg.login.inactiveuser'),
-                            ],
-                            400
-                        );
+                            ],400);
                     }
                 }else {
                     return response()->json([
@@ -420,7 +411,7 @@ class UserAuthController extends Controller
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' =>  __('msg.user.error'),
+                'message' =>  __('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -480,14 +471,7 @@ class UserAuthController extends Controller
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' =>  __('msg.change-password.failed'),
-                'error'   => $e->getMessage()
-            ], 500);
-        }
-        catch (\Throwable $e) {
-            return response()->json([
-                'status'  => 'failed',
-                'message' =>  __('msg.login.failed'),
+                'message' =>  __('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }

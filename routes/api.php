@@ -30,7 +30,7 @@ Route::middleware(['localization'])->group(function () {
     Route::prefix('user')->group(function () {
         Route::post('register' , [UserAuthController::class, 'register']);
         Route::post('verifyOTP',[UserAuthController::class,'verifyOTP']);
-        Route::post('resendregOTP',[UserAuthCOntroller::class,'resendregOTP']);
+        Route::post('resendregOTP',[UserAuthCOntroller::class,'resendRegOTP']);
         Route::post('login' , [UserAuthController::class, 'login']);
         Route::post('forgetpassword' , [UserAuthController::class, 'forgetpassword']);
         Route::post('forgotPasswordValidate',[UserAuthController::class,'forgotPasswordValidate']);

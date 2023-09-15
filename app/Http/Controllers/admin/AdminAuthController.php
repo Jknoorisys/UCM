@@ -33,6 +33,7 @@ class AdminAuthController extends Controller
             $service = new Services();
             $email = $req->email;
             $password = $req->password;
+
             $admin  = Admin::where('email', '=', $email)->first();
 
             if(!empty($admin)) 
@@ -60,7 +61,7 @@ class AdminAuthController extends Controller
             } else {
                 return response()->json([
                         'status'    => 'failed',
-                        'message'   =>  __('msg.login.incmail'),
+                        'message'   =>  __('msg.login.failed'),
                 ], 400);
             }
         } catch (\Throwable $e) {

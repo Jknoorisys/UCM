@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->integer('otp');
             $table->string('password');
+            $table->enum('is_social',['1','0'])->default('0');
+            $table->enum('social_type',['google','facebook','apple','manual'])->default('manual');
+            $table->string('social_id');
             $table->enum('is_verified', ['no', 'yes'])->default('no');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();

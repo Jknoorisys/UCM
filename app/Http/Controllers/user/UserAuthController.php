@@ -246,8 +246,6 @@ class UserAuthController extends Controller
                         );
 
                         $token = $service->getSignedAccessTokenForUser($user, $claims);
-                        $currentDate = Carbon::now()->format('Y-m-d');
-                        $currentTime = Carbon::now()->format('H:i:s');
 
                         $user_id  = DB::table('users')->where('email', $email)->where('password', $user->password)->take(1)->first();
                         $user_id->JWT_token = $token;
@@ -603,9 +601,6 @@ class UserAuthController extends Controller
 
                     $user->JWT_token = $service->getSignedAccessTokenForUser($user, $claims);
                     $user->save();
-
-                    $currentDate = Carbon::now()->format('Y-m-d');
-                    $currentTime = Carbon::now()->format('H:i:s');
 
                     return response()->json([
                             'status'    => 'success',

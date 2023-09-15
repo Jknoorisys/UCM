@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\admin\AdminAuthController;
+use App\Http\Controllers\admin\AdminProfileController;
 use App\Http\Controllers\user\UserAuthController;
+use App\Http\Controllers\user\UserProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +25,8 @@ Route::middleware(['localization'])->group(function () {
         Route::post('login' , [AdminAuthController::class, 'login']);
 
         Route::group(['middleware' => 'jwt.verify'], function () {
-        Route::post('changepassword', [AdminAuthController::class, 'changePassword']);
+        Route::post('changepassword', [AdminProfileController::class, 'changePassword']);
+        Route::post('getProfile', [AdminProfileController::class, 'getProfile']);
 
         });
     });
@@ -36,7 +39,7 @@ Route::middleware(['localization'])->group(function () {
         Route::post('forgotPasswordValidate',[UserAuthController::class,'forgotPasswordValidate']);
         Route::group(['middleware' => 'jwt.verify'], function () {
             Route::post('changepassword', [UserAuthController::class, 'changePassword']);
-            Route::post('getProfile', [UserAuthController::class, 'getProfile']);
+            Route::post('getProfile', [UserProfileController::class, 'getProfile']);
         });
     });
 

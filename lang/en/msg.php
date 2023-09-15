@@ -96,6 +96,11 @@ return [
         'not-verified' => 'Email not Verified, please verify it firts...'
     ],
 
+    'profile' => [
+        'uprofile' => 'User Profile',
+        'usernotfound' => 'User Not Found',
+    ],
+
     'add' => [
 
     ],

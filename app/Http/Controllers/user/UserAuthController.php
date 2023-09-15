@@ -38,7 +38,7 @@ class UserAuthController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status'    => 'failed',
-                'message'   => $errors['error_message'] ? $errors['error_message'] : __('msg.validation'),
+                'message'   => $errors['error_message'] ? $errors['error_message'] : trans('msg.validation'),
                 'errors'    => $validator->errors()
             ], 400);
         }
@@ -112,7 +112,7 @@ class UserAuthController extends Controller
             return response()->json([
                 'status'    => 'failed',
                 'errors'    =>  $validator->errors(),
-                'message'   => __('msg.validation'),
+                'message'   => trans('msg.validation'),
             ], 400);
         }
 
@@ -126,24 +126,24 @@ class UserAuthController extends Controller
                 if ($verificationCode) {
                     return response()->json([
                         'status'    => 'success',
-                        'message'   =>  __('msg.registration.success'),
+                        'message'   =>  trans('msg.registration.success'),
                     ], 200);
                 } else {
                     return response()->json([
                         'status'    => 'failed',
-                        'message'   =>   __('msg.registration.failed'),
+                        'message'   =>   trans('msg.registration.failed'),
                     ], 400);
                 }
             }else{
                 return response()->json([
                     'status'    => 'failed',
-                    'message'   =>   __('msg.registration.invalid'),
+                    'message'   =>   trans('msg.registration.invalid'),
                 ], 400);
             }
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' =>  __('msg.error'),
+                'message' =>  trans('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -159,7 +159,7 @@ class UserAuthController extends Controller
             return response()->json([
                     'status'    => 'failed',
                     'errors'    =>  $validator->errors(),
-                    'message'   =>  __('msg.validation'),
+                    'message'   =>  trans('msg.validation'),
             ], 400);
         }
 
@@ -185,30 +185,30 @@ class UserAuthController extends Controller
                         $email =  ['to'=> $req->email];
                         Mail::send('otpmail', $data, function ($message) use ($email) {
                             $message->to($email['to']);
-                            $message->subject(__('msg.email.mailverification'));
+                            $message->subject(trans('msg.email.mailverification'));
                         });
 
                         return response()->json([
                             'status'    => 'success',
-                            'message'   =>  __('msg.registration.email-sent'),
+                            'message'   =>  trans('msg.registration.email-sent'),
                         ], 200);
                     }
                 } else {
                     return response()->json([
                         'status'    => 'failed',
-                        'message'   =>   __('msg.registration.verified'),
+                        'message'   =>   trans('msg.registration.verified'),
                     ], 400);
                 }
             } else {
                 return response()->json([
                     'status'    => 'failed',
-                    'message'   =>  __('msg.registration.not-found'),
+                    'message'   =>  trans('msg.registration.not-found'),
                 ], 400);
             }
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' => __('msg.error'),
+                'message' => trans('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -225,7 +225,7 @@ class UserAuthController extends Controller
             return response()->json([
                     'status'    => 'failed',
                     'errors'    =>  $validator->errors(),
-                    'message'   =>  __('msg.user.validation.fail'),
+                    'message'   =>  trans('msg.validation'),
                 ], 400
             );
         } 
@@ -255,31 +255,31 @@ class UserAuthController extends Controller
                             [
                                 'status'    => 'success',
                                 'data' => $user_id,
-                                'message'   =>   __('msg.login.success'),
+                                'message'   =>   trans('msg.login.success'),
                             ],200);
                     } else {
                         return response()->json(
                             [
                                 'status'    => 'failed',
-                                'message'   =>  __('msg.login.inactive'),
+                                'message'   =>  trans('msg.login.inactive'),
                             ],400);
                     }
                 }else {
                     return response()->json([
                             'status'    => 'failed',
-                            'message'   =>  __('msg.login.invalid'),
+                            'message'   =>  trans('msg.login.invalid'),
                     ], 400);
                 }
             } else {
                 return response()->json([
                         'status'    => 'failed',
-                        'message'   =>  __('msg.login.not-found'),
+                        'message'   =>  trans('msg.login.not-found'),
                 ], 400);
             }
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' =>  __('msg.error'),
+                'message' =>  trans('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -295,7 +295,7 @@ class UserAuthController extends Controller
             return response()->json([
                 'status'    => 'failed',
                 'errors'    =>  $validator->errors(),
-                'message'   =>  __('msg.validation'),
+                'message'   =>  trans('msg.validation'),
             ], 400 );
         }
 
@@ -322,7 +322,7 @@ class UserAuthController extends Controller
                 // echo json_encode($email['to']);exit;
                 $datamail = Mail::send('forgotpassmail', $data, function ($message) use ($email) {
                     $message->to($email['to']);
-                    $message->subject(__('msg.email.mailverification'));
+                    $message->subject(trans('msg.email.mailverification'));
                 });
 
                 if ($userforgotpass) {
@@ -331,24 +331,24 @@ class UserAuthController extends Controller
                     return response()->json([
                             'status'    => 'success',
                             'data' => $user,
-                            'message'   =>  __('msg.reset-password.email-sent'),
+                            'message'   =>  trans('msg.reset-password.email-sent'),
                         ], 200);
                 } else {
                     return response()->json([
                             'status'    => 'failed',
-                            'message'   =>  __('msg.reset-password.failed'),
+                            'message'   =>  trans('msg.reset-password.failed'),
                         ], 400 );
                 }
             } else {
                 return response()->json([
                         'status'    => 'failed',
-                        'message'   =>  __('msg.reset-password.not-found'),
+                        'message'   =>  trans('msg.reset-password.not-found'),
                     ], 400 );
             }
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' =>  __('msg.error'),
+                'message' =>  trans('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -362,12 +362,13 @@ class UserAuthController extends Controller
             'password'   => 'required|max:20||min:8',
             'confirm_password' => 'required|same:password',
         ]);
+
         $errors = [];
         foreach ($validator->errors()->messages() as $key => $value) {
-            
                 $key = 'error_message';
                 $errors[$key] = is_array($value) ? implode(',', $value) : $value;
         }
+
         if ($validator->fails()) {
             return response()->json([
                 'status'    => 'failed',
@@ -378,7 +379,6 @@ class UserAuthController extends Controller
 
         try {
             $forgotpassUser = DB::table('password_reset_tokens')->where('token',$req->otp)->first();
-            // echo json_encode();exit;
             if ($forgotpassUser) {
 
                 $password = $req->password;
@@ -389,31 +389,31 @@ class UserAuthController extends Controller
                     if ($info && $otp) {
                         return response()->json([
                                 'status'    => 'success',
-                                'message'   =>  __('msg.reset-password.success'),
+                                'message'   =>  trans('msg.reset-password.success'),
                             ], 200);
                     } else {
                         return response()->json([
                                 'status'    => 'failed',
-                                'message'   =>  __('msg.reset-password.failed'),
+                                'message'   =>  trans('msg.reset-password.failed'),
                             ],400
                         );
                     }
                 } else {
                     return response()->json([
                             'status'    => 'failed',
-                            'message'   =>  __('msg.reset-password.failed'),
+                            'message'   =>  trans('msg.reset-password.failed'),
                         ], 400);
                 }
             } else {
                 return response()->json([
                         'status'    => 'failed',
-                        'message'   =>  __('msg.reset-password.invalid'),
+                        'message'   =>  trans('msg.reset-password.invalid'),
                     ], 400);
             }
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' =>  __('msg.error'),
+                'message' =>  trans('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -432,9 +432,8 @@ class UserAuthController extends Controller
             return response()->json([
                     'status'    => 'failed',
                     'errors'    =>  $validator->errors(),
-                    'message'   =>  __('msg.validation'),
-                ], 400
-            );
+                    'message'   =>  trans('msg.validation'),
+                ], 400);
         } 
 
         try {
@@ -453,27 +452,24 @@ class UserAuthController extends Controller
                             [
                                 'status'    => 'success',
                                 'data' => $user,
-                                'message'   =>   __('msg.change-password.success'),
-                            ],
-                            200
-                        );
-                    
+                                'message'   =>   trans('msg.change-password.success'),
+                            ],200);
                 }else {
                     return response()->json([
                             'status'    => 'failed',
-                            'message'   =>  __('msg.change-password.invalid'),
+                            'message'   =>  trans('msg.change-password.invalid'),
                     ], 400);
                 }
             } else {
                 return response()->json([
                         'status'    => 'failed',
-                        'message'   =>  __('msg.change-password.not-found'),
+                        'message'   =>  trans('msg.change-password.not-found'),
                 ], 400);
             }
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' =>  __('msg.error'),
+                'message' =>  trans('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -530,13 +526,16 @@ class UserAuthController extends Controller
                 'otp_msg'=> trans('msg.email.otp_msg')
             ];
                 $email =  ['to'=> $request->email];
+
                 $sendEmail = Mail::send('otpmail', $data, function ($message) use ($email) {
                     $message->to($email['to']);
                     $message->subject(__('msg.email.mailverification'));
                 });
 
                 if ($create) {
+
                     $userdata = User::where('email', $user['email'])->first();
+
                     return response()->json([
                         'status'    => 'success',
                         'data' => $userdata,
@@ -548,7 +547,6 @@ class UserAuthController extends Controller
                         'message'   => __('msg.registration.failed'),
                     ], 400);
                 }
-
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
@@ -556,5 +554,9 @@ class UserAuthController extends Controller
                 'error'   => $e->getMessage()
             ], 500);
         }
+    }
+
+    function socialLogin(Request $request) {
+        
     }
 }

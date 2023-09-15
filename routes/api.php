@@ -28,6 +28,11 @@ Route::middleware(['localization'])->group(function () {
         });
     });
     Route::prefix('user')->group(function () {
+        // By Javeriya Kauser
+        Route::post('social-register' , [UserAuthController::class, 'socialRegistration']);
+        Route::post('social-login' , [UserAuthController::class, 'socialLogin']);
+
+        // By Aaisha Shaikh
         Route::post('register' , [UserAuthController::class, 'register']);
         Route::post('verifyOTP',[UserAuthController::class,'verifyOTP']);
         Route::post('resendregOTP',[UserAuthCOntroller::class,'resendRegOTP']);

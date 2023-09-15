@@ -53,6 +53,8 @@ return [
         'invalid' => 'Password Does Not Match!',
         'inactive' => 'Account blocked by Admin',
         'not-verified' => 'Email not Verified, please verify it firts...',
+        'not-social' => 'Unable to Find Social Account',
+        'invalid-social' => 'Social Id Does Not Match, Please try again...',
     ],
 
     'reset-password' => [

@@ -80,8 +80,8 @@ class UserAuthController extends Controller
                     $userdata = User::where('email',$user['email'])->first();
                     return response()->json([
                         'status'    => 'success',
-                        'data' => $userdata,
                         'message'   => __('msg.registration.email-sent'),
+                        'data' => $userdata,
                     ], 200);
                 } else {
                     return response()->json([
@@ -234,7 +234,7 @@ class UserAuthController extends Controller
             $service = new Services();
             $email = $req->email;
             $password = $req->password;
-            $user  = user::where('email', '=', $email)->first();
+            $user  = User::where('email', '=', $email)->first();
 
             if(!empty($user)) 
             {
@@ -254,8 +254,8 @@ class UserAuthController extends Controller
                         return response()->json(
                             [
                                 'status'    => 'success',
-                                'data' => $user_id,
                                 'message'   =>   trans('msg.login.success'),
+                                'data'      => $user_id,
                             ],200);
                     } else {
                         return response()->json(
@@ -538,8 +538,8 @@ class UserAuthController extends Controller
 
                     return response()->json([
                         'status'    => 'success',
-                        'data' => $userdata,
                         'message'   => __('msg.registration.email-sent'),
+                        'data' => $userdata,
                     ], 200);
                 } else {
                     return response()->json([
@@ -557,6 +557,59 @@ class UserAuthController extends Controller
     }
 
     function socialLogin(Request $request) {
-        
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'social_type'   => ['required', Rule::in(['google','facebook','apple','manual'])],
+            'social_id'     => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                    'status'    => 'failed',
+                    'errors'    =>  $validator->errors(),
+                    'message'   =>  trans('msg.validation'),
+                ], 400
+            );
+        } 
+
+        try {
+            $service = new Services();
+            $email = $request->email;
+            $social_type = $request->social_type;
+            $social_id = $request->social_id;
+            $user  = User::where('email', '=', $email)->first();
+            if ($user->is_social != '1') {
+                 return response()->json([
+                        'status'    => 'failed',
+                        'message'   =>  trans('msg.login.not-social'),
+                ], 400);
+            }
+
+            if (!empty($user)) {
+                if (($social_type == $user->social_type) && ($social_id == $user->social_id)) {
+                     return response()->json([
+                            'status'    => 'success',
+                            'message'   =>  trans('msg.login.success'),
+                            'data'      => $user
+                    ], 200);
+                } else {
+                     return response()->json([
+                            'status'    => 'failed',
+                            'message'   =>  trans('msg.login.invalid-social'),
+                    ], 400);
+                }
+            } else {
+                return response()->json([
+                        'status'    => 'failed',
+                        'message'   =>  trans('msg.login.not-found'),
+                ], 400);
+            }
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status'  => 'failed',
+                'message' =>  trans('msg.error'),
+                'error'   => $e->getMessage()
+            ], 500);
+        }
     }
 }

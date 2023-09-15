@@ -13,7 +13,6 @@ class UserProfileController extends Controller
     public function getProfile(Request $req)
     {
         $validator = Validator::make($req->all(), [
-            
             'user_id'   => ['required','alpha_dash', Rule::notIn('undefined')],
         ]);
 
@@ -23,9 +22,7 @@ class UserProfileController extends Controller
                     'status'    => 'failed',
                     'errors'    =>  $validator->errors(),
                     'message'   =>  __('msg.validation'),
-                ],
-                400
-            );
+                ],400);
         }
 
         try {
@@ -35,18 +32,14 @@ class UserProfileController extends Controller
                     [
                         'status'    => 'success',
                         'data' => $user,
-                        'message'   =>  __('msg.profile.uprofile'),
-                    ],
-                    200
-                );
+                        'message'   =>  __('msg.details.success'),
+                    ],200);
             } else {
                 return response()->json(
                     [
                         'status'    => 'failed',
-                        'message'   =>  __('msg.profile.usernotfound'),
-                    ],
-                    400
-                );
+                        'message'   =>  __('msg.details.not-found'),
+                    ],400);
             }
         } catch (\Throwable $e) {
             return response()->json([

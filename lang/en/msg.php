@@ -25,25 +25,6 @@ return [
         'resendotp' => 'OTP Resent successfuly',
     ],
 
-    'forgotpassword' => [
-        'resetpassword' => 'Need to reset your password?',
-        'click' => 'No problem! Just click on the button below and you’ll be on your way.',
-        'forgotpassword' => 'Forgot Password',
-        'eamilsent' => 'Email Sent Successfully',
-        'emailnotsent' => 'Unable to Send Email, Please Try Again',
-        'reset' => 'Password Reset Successfuly!',
-        'notreset' => 'Unable to reset the password',
-        'passnotmatch' => 'Password does not match',
-        'otpnotmatch' => 'Incorrect OTP entered',
-    ],
-
-    'otp' => [
-        'otpver' => 'Registration Successfull!',
-        'failure' => 'Unable to Verify OTP, Please Try Again',
-        'otpnotver' => 'OTP does not match!',
-        
-    ],
-
     'localization' => [
         'invalid' => 'Invalid Language Selected!',
         'required' => 'X-localization header is required'
@@ -92,24 +73,27 @@ return [
         'not-verified' => 'Email not Verified, please verify it firts...'
     ],
 
-    'profile' => [
-        'uprofile' => 'User Profile',
-        'usernotfound' => 'User Not Found',
-    ],
-
     'add' => [
-
+        'success' => 'Details Added Successully',
+        'failed'  => 'Unable to Add, please try again...',
+        'not-found' => 'User Not Found, Please Register First...',
     ],
     
     'update' => [
-
+        'success' => 'Details Updated Successully',
+        'failed'  => 'Unable to Update, please try again...',
+        'not-found' => 'User Not Found, Please Register First...',
     ],
 
     'list' => [
-
+        'success' => 'List Fetched Successully',
+        'failed'  => 'No Data Found',
+        'not-found' => 'User Not Found, Please Register First...',
     ],
 
     'details' => [
-
+        'success' => 'Details Fetched Successully',
+        'failed'  => 'No Details Found',
+        'not-found' => 'User Not Found, Please Register First...',
     ],
 ];

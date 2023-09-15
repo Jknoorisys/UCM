@@ -23,7 +23,6 @@ return [
         'registerus' => 'Registered with us!',
         'otp_msg' => 'Your One time Password to Complete your Registrations is',
         'resendotp' => 'OTP Resent successfuly',
-        
     ],
 
     'forgotpassword' => [
@@ -59,12 +58,11 @@ return [
 
     'registration' => [
         'success' => 'Registration Successful',
-        'emailver' => 'OTP Sent on Registered Email',
+        'email-sent' => 'Registration OTP Sent on Registered Email',
         'failed'  => 'Registration Faild',
-        'invalid' => 'Unable to Register, please try again...',
-        'alreadyverify' => 'Email Already Verified',
-        'registerfirst' => 'User Not Found, Please Register First...',
-
+        'invalid' => 'OTP does Not Match, please try again...',
+        'verified' => 'Email Already Verified',
+        'not-found' => 'User Not Found, Please Register First...',
     ],
 
     'login' => [
@@ -74,8 +72,6 @@ return [
         'invalid' => 'Password Does Not Match!',
         'inactive' => 'Account blocked by Admin',
         'not-verified' => 'Email not Verified, please verify it firts...',
-        'incmail' => 'Incorrect Email Address',
-        'inactiveuser' => 'User is Inactive',
     ],
 
     'reset-password' => [

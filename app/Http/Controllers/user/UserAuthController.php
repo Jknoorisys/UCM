@@ -17,6 +17,7 @@ use App\Libraries\Services;
 
 class UserAuthController extends Controller
 {
+    // By Aaisha Shaikh
     public function register(Request $req)
     {
         $validator = Validator::make($req->all(), [
@@ -26,12 +27,14 @@ class UserAuthController extends Controller
             'password' => 'required|max:20||min:8',
             'phone'   => 'required|numeric|unique:users',
         ]);
+
         $errors = [];
         foreach ($validator->errors()->messages() as $key => $value) {
             // if($key == 'email')
                 $key = 'error_message';
                 $errors[$key] = is_array($value) ? implode(',', $value) : $value;
         }
+
         if ($validator->fails()) {
             return response()->json([
                 'status'    => 'failed',
@@ -48,7 +51,6 @@ class UserAuthController extends Controller
                 $data = $req->input();
 
                 $user = [
-                    
                     'fname' => $data['fname'], 
                     'lname' => $data['lname'], 
                     'password' => Hash::make($data['password']),
@@ -77,15 +79,15 @@ class UserAuthController extends Controller
                 if ($saveUser) {
                     $userdata = User::where('email',$user['email'])->first();
                     return response()->json([
-                            'status'    => 'success',
-                            'data' => $userdata,
-                            'message'   => __('msg.registration.emailver'),
-                        ], 200);
+                        'status'    => 'success',
+                        'data' => $userdata,
+                        'message'   => __('msg.registration.email-sent'),
+                    ], 200);
                 } else {
                     return response()->json([
-                            'status'    => 'failed',
-                            'message'   => __('msg.registration.failed'),
-                        ], 400);
+                        'status'    => 'failed',
+                        'message'   => __('msg.registration.failed'),
+                    ], 400);
                 }
             }
         } catch (\Throwable $e) {
@@ -124,18 +126,18 @@ class UserAuthController extends Controller
                 if ($verificationCode) {
                     return response()->json([
                         'status'    => 'success',
-                        'message'   =>  __('msg.otp.otpver'),
+                        'message'   =>  __('msg.registration.success'),
                     ], 200);
                 } else {
                     return response()->json([
                         'status'    => 'failed',
-                        'message'   =>   __('msg.otp.failure'),
+                        'message'   =>   __('msg.registration.failed'),
                     ], 400);
                 }
             }else{
                 return response()->json([
                     'status'    => 'failed',
-                    'message'   =>   __('msg.otp.otpnotver'),
+                    'message'   =>   __('msg.registration.invalid'),
                 ], 400);
             }
         } catch (\Throwable $e) {
@@ -188,19 +190,19 @@ class UserAuthController extends Controller
 
                         return response()->json([
                             'status'    => 'success',
-                            'message'   =>  __('msg.email.resendotp'),
+                            'message'   =>  __('msg.registration.email-sent'),
                         ], 200);
                     }
                 } else {
                     return response()->json([
                         'status'    => 'failed',
-                        'message'   =>   __('msg.registration.alreadyverify'),
+                        'message'   =>   __('msg.registration.verified'),
                     ], 400);
                 }
             } else {
                 return response()->json([
                     'status'    => 'failed',
-                    'message'   =>  __('msg.registration.registerfirst'),
+                    'message'   =>  __('msg.registration.not-found'),
                 ], 400);
             }
         } catch (\Throwable $e) {
@@ -259,7 +261,7 @@ class UserAuthController extends Controller
                         return response()->json(
                             [
                                 'status'    => 'failed',
-                                'message'   =>  __('msg.login.inactiveuser'),
+                                'message'   =>  __('msg.login.inactive'),
                             ],400);
                     }
                 }else {
@@ -271,7 +273,7 @@ class UserAuthController extends Controller
             } else {
                 return response()->json([
                         'status'    => 'failed',
-                        'message'   =>  __('msg.login.incmail'),
+                        'message'   =>  __('msg.login.not-found'),
                 ], 400);
             }
         } catch (\Throwable $e) {
@@ -329,18 +331,18 @@ class UserAuthController extends Controller
                     return response()->json([
                             'status'    => 'success',
                             'data' => $user,
-                            'message'   =>  __('msg.forgotpassword.emailsent'),
+                            'message'   =>  __('msg.reset-password.email-sent'),
                         ], 200);
                 } else {
                     return response()->json([
                             'status'    => 'failed',
-                            'message'   =>  __('msg.forgotpassword.emailnotsent'),
+                            'message'   =>  __('msg.reset-password.failed'),
                         ], 400 );
                 }
             } else {
                 return response()->json([
                         'status'    => 'failed',
-                        'message'   =>  __('msg.registration.registerfirst'),
+                        'message'   =>  __('msg.reset-password.not-found'),
                     ], 400 );
             }
         } catch (\Throwable $e) {
@@ -387,25 +389,25 @@ class UserAuthController extends Controller
                     if ($info && $otp) {
                         return response()->json([
                                 'status'    => 'success',
-                                'message'   =>  __('msg.forgotpassword.reset'),
+                                'message'   =>  __('msg.reset-password.success'),
                             ], 200);
                     } else {
                         return response()->json([
                                 'status'    => 'failed',
-                                'message'   =>  __('msg.forgotpassword.notreset'),
+                                'message'   =>  __('msg.reset-password.failed'),
                             ],400
                         );
                     }
                 } else {
                     return response()->json([
                             'status'    => 'failed',
-                            'message'   =>  __('msg.forgotpassword.passnotmatch'),
+                            'message'   =>  __('msg.reset-password.failed'),
                         ], 400);
                 }
             } else {
                 return response()->json([
                         'status'    => 'failed',
-                        'message'   =>  __('msg.forgotpassword.otpnotmatch'),
+                        'message'   =>  __('msg.reset-password.invalid'),
                     ], 400);
             }
         } catch (\Throwable $e) {
@@ -472,6 +474,43 @@ class UserAuthController extends Controller
             return response()->json([
                 'status'  => 'failed',
                 'message' =>  __('msg.error'),
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // By Javeriya Kauser
+    public function socialRegistration(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'fname'         => 'required|min:3|string',
+            'lname'         => 'required|min:3|string',
+            'email'         => 'required|email|unique:users',
+            'social_type'   => ['required', Rule::in(['google','facebook','apple','manual'])],
+            'social_id'     => 'required',
+            'phone'         => 'required|numeric|unique:users',
+        ]);
+
+        $errors = [];
+        foreach ($validator->errors()->messages() as $key => $value) {
+            // if($key == 'email')
+                $key = 'error_message';
+                $errors[$key] = is_array($value) ? implode(',', $value) : $value;
+        }
+        
+        if ($validator->fails()) {
+            return response()->json([
+                'status'    => 'failed',
+                'message'   => $errors['error_message'] ? $errors['error_message'] : __('msg.validation'),
+                'errors'    => $validator->errors()
+            ], 400);
+        }
+
+        try {
+            //code...
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status'  => 'failed',
+                'message' => __('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }

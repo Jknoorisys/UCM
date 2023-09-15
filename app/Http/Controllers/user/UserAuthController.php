@@ -506,7 +506,49 @@ class UserAuthController extends Controller
         }
 
         try {
-            //code...
+            $otp = rand(100000, 999999);
+
+            $user = [
+                'fname'       => $request->fname, 
+                'lname'       => $request->lname, 
+                'is_social'   => '1',
+                'social_type' => $request->social_type,
+                'social_id'   => $request->social_id,
+                'email'       => $request->email, 
+                'phone'       => $request->phone, 
+                'otp'         => $otp, 
+                'created_at'  => Carbon::now()
+            ];
+
+            $create = User::create($user);
+
+            $data = [
+                'salutation' => trans('msg.email.Dear'),
+                'fname'=> $request->fname,
+                'otp'=> $otp, 
+                'msg'=> trans('msg.email.registerus'), 
+                'otp_msg'=> trans('msg.email.otp_msg')
+            ];
+                $email =  ['to'=> $request->email];
+                $sendEmail = Mail::send('otpmail', $data, function ($message) use ($email) {
+                    $message->to($email['to']);
+                    $message->subject(__('msg.email.mailverification'));
+                });
+
+                if ($create) {
+                    $userdata = User::where('email', $user['email'])->first();
+                    return response()->json([
+                        'status'    => 'success',
+                        'data' => $userdata,
+                        'message'   => __('msg.registration.email-sent'),
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'status'    => 'failed',
+                        'message'   => __('msg.registration.failed'),
+                    ], 400);
+                }
+
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',

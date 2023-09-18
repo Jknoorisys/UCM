@@ -11,6 +11,8 @@ class DeleteAccountRequest extends Notification
 {
     use Queueable;
 
+    protected $user;
+    
     /**
      * Create a new notification instance.
      */

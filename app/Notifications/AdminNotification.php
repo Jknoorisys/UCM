@@ -11,6 +11,9 @@ class AdminNotification extends Notification
 {
     use Queueable;
 
+    protected $user;
+    protected $message;
+    
     /**
      * Create a new notification instance.
      */

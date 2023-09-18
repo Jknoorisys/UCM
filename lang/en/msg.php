@@ -88,33 +88,33 @@ return [
     'add' => [
         'success' => 'Details Added Successully',
         'failed'  => 'Unable to Add, please try again...',
-        'not-found' => 'Details Not Found, Please Register First...',
+        'not-found' => 'Details Not Found',
     ],
     
     'update' => [
         'success' => 'Details Updated Successully',
         'failed'  => 'Unable to Update, please try again...',
-        'not-found' => 'User Not Found, Please Register First...',
+        'not-found' => 'Details Not Found',
         'inactive' => 'Account blocked by Admin',
     ],
 
     'list' => [
         'success' => 'List Fetched Successully',
         'failed'  => 'No Data Found',
-        'not-found' => 'No Data Found, Please Register First...',
+        'not-found' => 'User Not Found, Please Register First...',
     ],
 
     'details' => [
         'success' => 'Details Fetched Successully',
         'failed'  => 'No Details Found',
-        'not-found' => 'Details Not Found, Please Register First...',
+        'not-found' => 'Details Not Found',
         'inactive' => 'Account blocked by Admin',
     ],
 
     'delete' => [
         'success' => 'User Deleted Successully',
         'failed'  => 'Unable to Delete User, please try again...',
-        'not-found' => 'Details Not Found, Please Register First...',
+        'not-found' => 'User Not Found, Please Register First...',
         'inactive' => 'Account blocked by Admin',
         'email-sent' => 'Delete Account Request Sent',
         'email-failed' => 'Unable to send delete account request, please try again...'

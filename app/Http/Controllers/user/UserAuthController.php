@@ -585,7 +585,7 @@ class UserAuthController extends Controller
             $social_id = $request->social_id;
             $user  = User::where('email', '=', $email)->first();
 
-            if ($user->is_social != '1') {
+            if (!empty($user) && $user->is_social != '1') {
                  return response()->json([
                         'status'    => 'failed',
                         'message'   =>  trans('msg.login.not-social'),

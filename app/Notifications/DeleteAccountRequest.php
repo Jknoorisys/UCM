@@ -52,7 +52,7 @@ class DeleteAccountRequest extends Notification
             'user_id'   => $this->user->id,
             'name'      => $this->user->fname.' '.$this->user->lname,
             'email'     => $this->user->email,
-            'title'     => ('msg.notification.delete-title'),
+            'title'     => trans('msg.notification.delete-title'),
             'msg'       => $this->user->fname.' '.$this->user->lname.' '.trans('notification.email.account-delete'),
             'datetime'  => date('Y-m-d h:i:s'),
         ];

@@ -29,6 +29,7 @@ Route::middleware(['localization'])->group(function () {
             Route::post('changepassword', [AdminProfileController::class, 'changePassword']);
             Route::post('getProfile', [AdminProfileController::class, 'getProfile']);
             Route::post('update-percent' , [AdminProfileController::class, 'updateBudgetPercentage']);
+            Route::post('notifications', [AdminProfileController::class, 'getNotifications']);
 
             Route::prefix('users')->group(function () {
                 Route::post('list' , [ManageUserController::class, 'getUserList']);
@@ -52,12 +53,14 @@ Route::middleware(['localization'])->group(function () {
         Route::post('login' , [UserAuthController::class, 'login']);
         Route::post('forgetpassword' , [UserAuthController::class, 'forgetpassword']);
         Route::post('forgotPasswordValidate',[UserAuthController::class,'forgotPasswordValidate']);
+
         Route::group(['middleware' => 'jwt.verify'], function () {
             Route::post('changepassword', [UserAuthController::class, 'changePassword']);
             Route::post('getProfile', [UserProfileController::class, 'getProfile']);
 
             // By Javeriya Kauser
             Route::post('delete-account', [UserProfileController::class, 'deleteAccount']);
+            Route::post('notifications', [UserProfileController::class, 'getNotifications']);
         });
     });
 });

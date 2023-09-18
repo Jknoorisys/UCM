@@ -55,6 +55,7 @@ return [
         'not-verified' => 'Email not Verified, please verify it firts...',
         'not-social' => 'Unable to Find Social Account',
         'invalid-social' => 'Social Id Does Not Match, Please try again...',
+        'incmail' => 'Invalid Email Address',
     ],
 
     'reset-password' => [
@@ -97,5 +98,12 @@ return [
         'success' => 'Details Fetched Successully',
         'failed'  => 'No Details Found',
         'not-found' => 'User Not Found, Please Register First...',
+    ],
+    
+    'admin' => [
+        'get-users' => [
+            'success' => 'User List',
+            'failure' => 'No User Found',
+        ],
     ],
 ];

@@ -55,6 +55,9 @@ Route::middleware(['localization'])->group(function () {
         Route::group(['middleware' => 'jwt.verify'], function () {
             Route::post('changepassword', [UserAuthController::class, 'changePassword']);
             Route::post('getProfile', [UserProfileController::class, 'getProfile']);
+
+            // By Javeriya Kauser
+            Route::post('delete-account', [UserProfileController::class, 'deleteAccount']);
         });
     });
 });

@@ -101,8 +101,8 @@ class UserProfileController extends Controller
             }
 
             $admin = Admin::first();
-            $deleteRequest = $admin->notify(new DeleteAccountRequest($user));
-            if ($deleteRequest) {
+            if ($admin) {
+                $deleteRequest = $admin->notify(new DeleteAccountRequest($user));
                 return response()->json([
                         'status'    => 'success',
                         'message'   => trans('msg.delete.email-sent'),

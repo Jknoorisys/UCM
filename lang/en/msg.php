@@ -125,5 +125,10 @@ return [
             'success' => 'User List',
             'failure' => 'No User Found',
         ],
+
+        'user-status' => [
+            'success' => 'User Status Changed Successfuly!',
+            ''
+        ],
     ],
 ];

@@ -127,7 +127,7 @@ class UserAuthController extends Controller
 
                      $message = [
                         'title' => trans('msg.notification.registration-title'),
-                        'msg'   => $user->fname.$user->lname.' '.trans('msg.notification.registration')
+                        'msg'   => $user->fname.' '.$user->lname.' '.trans('msg.notification.registration')
                      ];
 
                      $user->notify(new AdminNotification($message, $user));

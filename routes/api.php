@@ -30,6 +30,7 @@ Route::middleware(['localization'])->group(function () {
             Route::post('getProfile', [AdminProfileController::class, 'getProfile']);
             Route::post('update-percent' , [AdminProfileController::class, 'updateBudgetPercentage']);
             Route::post('notifications', [AdminProfileController::class, 'getNotifications']);
+            Route::post('send-notification', [AdminProfileController::class, 'sendNotification']);
 
             Route::prefix('users')->group(function () {
                 Route::post('list' , [ManageUserController::class, 'getUserList']);

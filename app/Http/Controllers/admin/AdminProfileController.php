@@ -5,6 +5,8 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\User;
+use App\Notifications\UserNotification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -208,6 +210,51 @@ class AdminProfileController extends Controller
                         'message'   => trans('msg.list.failed'),
                         'data'      => $notifications
                 ], 200);
+            }
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status'  => 'failed',
+                'message' =>  trans('msg.error'),
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function sendNotification(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'title'   => 'required',
+            'message' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                    'status'    => 'failed',
+                    'errors'    =>  $validator->errors(),
+                    'message'   =>  trans('msg.validation'),
+                ], 400
+            );
+        } 
+
+        try {
+            $message = [
+                'title' => $request->title,
+                'msg'   => $request->message
+            ];      
+           
+           $users = User::where([['status', '=', 'active'], ['is_verified', '=', 'yes']])->get();
+            if (!$users->isEmpty()) {
+                foreach ($users as $user) {
+                   $user->notify(new UserNotification($message));
+                }
+                return response()->json([
+                        'status'    => 'success',
+                        'message'   => trans('msg.notification.success'),
+                ], 200);
+            } else {
+                return response()->json([
+                        'status'    => 'failed',
+                        'message'   => trans('msg.notification.failed'),
+                ], 400);
             }
         } catch (\Throwable $e) {
             return response()->json([

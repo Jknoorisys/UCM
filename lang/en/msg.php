@@ -28,6 +28,8 @@ return [
     ],
 
     'notification' => [
+        'success' => 'Notifications Sent Successfully',
+        'failed'  => 'Unable to send notification, please try again...',
         'account-delete' => 'has requested to delete his/her account.',
         'delete-title' => 'Delete Account Request',
         'registration-title' => 'New Registration',

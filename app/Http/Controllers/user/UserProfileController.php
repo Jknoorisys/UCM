@@ -66,7 +66,6 @@ class UserProfileController extends Controller
             ], 500);
         }
     }
-
     
     // By Javeriya Kauser
     public function deleteAccount(Request $request) {

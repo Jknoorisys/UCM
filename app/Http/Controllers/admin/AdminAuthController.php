@@ -48,7 +48,7 @@ class AdminAuthController extends Controller
                         return response()->json(
                             [
                                 'status'    => 'success',
-                                'data' => $admin,
+                                'data'      => $admin,
                                 'message'   =>   __('msg.login.success'),
                             ],200);
                 }else {
@@ -72,5 +72,7 @@ class AdminAuthController extends Controller
         }
     }
     
+
+
     
 }

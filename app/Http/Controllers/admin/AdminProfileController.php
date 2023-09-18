@@ -86,7 +86,7 @@ class AdminProfileController extends Controller
         }
 
         try {
-            $admin = DB::table('admins')->where('id', '=', $req->admin_id)->first();
+            $admin = Admin::where('id', '=', $req->admin_id)->first();
             if (!empty($admin)) {
                 return response()->json(
                     [

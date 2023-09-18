@@ -45,7 +45,7 @@ class UserAuthController extends Controller
         }
 
         try {
-            $result = DB::table('users')->where('email', $req->input('email'))->get();
+            $result = User::where('email', $req->input('email'))->get();
 
             if (!empty($result)) {
                 $otp = rand(100000, 999999);
@@ -118,10 +118,10 @@ class UserAuthController extends Controller
         try {
             $otp = $req->email_otp;
             $id = $req->id;
-            $match_otp = DB::table('users')->where('id', '=', $id)->where('otp', '=', $otp)->first();
+            $match_otp = User::where('id', '=', $id)->where('otp', '=', $otp)->first();
             if(!empty($match_otp))
             {
-                $verificationCode   =  DB::table('users')->where('otp', '=', $otp)->where('id', '=', $id)->update(['is_verified' => 'yes', 'updated_at' => Carbon::now()]);
+                $verificationCode   =  User::where('otp', '=', $otp)->where('id', '=', $id)->update(['is_verified' => 'yes', 'updated_at' => Carbon::now()]);
                 if ($verificationCode) {
                      $user = User::find($id);
 
@@ -254,7 +254,7 @@ class UserAuthController extends Controller
 
                         $token = $service->getSignedAccessTokenForUser($user, $claims);
 
-                        $user_id  = DB::table('users')->where('email', $email)->where('password', $user->password)->take(1)->first();
+                        $user_id  = User::where('email', $email)->where('password', $user->password)->take(1)->first();
                         $user_id->JWT_token = $token;
                         $userJWToken = user::where('id','=',$user->id)->update(['JWT_token' => $user->token]);
                         return response()->json(
@@ -391,7 +391,7 @@ class UserAuthController extends Controller
                 if ($password == $req->confirm_password) {
                     $updatedpassword = Hash::make($req->password);
                     $otp = DB::table('password_reset_tokens')->where('token',$req->otp)->delete();
-                    $info = DB::table('users')->where('email', $forgotpassUser->email)->update(['password' => $updatedpassword]);
+                    $info = User::where('email', $forgotpassUser->email)->update(['password' => $updatedpassword]);
                     if ($info && $otp) {
                         return response()->json([
                                 'status'    => 'success',

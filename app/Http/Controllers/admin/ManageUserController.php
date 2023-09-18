@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\User;
 use function App\Helpers\AuthUser;
 
 class ManageUserController extends Controller
@@ -34,7 +34,8 @@ class ManageUserController extends Controller
         try {
             $per_page = 10;
             $page_number = $req->input(key: 'page_number', default: 1);
-            $user = DB::table('users')->where('is_verified', '=', 'yes');
+            $user_id = $req->user_id;
+            $user  = AuthUser($user_id);
             $search = $req->search ? $req->search : '';
             if (!empty($search)) {
                 $user->where('fname', 'LIKE', "%$search%");
@@ -51,14 +52,14 @@ class ManageUserController extends Controller
             if (!($users->isEmpty())) {
                 return response()->json([
                     'status'    => 'success',
-                    'message'   => trans('msg.admin.get-users.success'),
+                    'message'   => trans('msg.list.success'),
                     'total'     => $total,
                     'data'      => $users
                 ], 200);
             } else {
                 return response()->json([
                     'status'    => 'success',
-                    'message'   => trans('msg.admin.get-users.failure'),
+                    'message'   => trans('msg.list.failed'),
                     'data'      => [],
                 ], 200);
             }
@@ -91,7 +92,8 @@ class ManageUserController extends Controller
 
         try {
 
-            $user = DB::table('users')->where('id', '=', $req->user_id)->first();
+            $user_id = $req->user_id;
+            $user  = AuthUser($user_id);
             if (!empty($user)) {
                 return response()->json(
                     [

@@ -14,9 +14,10 @@ class AdminNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct($message)
+    public function __construct($message, $user)
     {
         $this->message = $message;
+        $this->user = $user;
     }
 
     /**

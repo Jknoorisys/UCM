@@ -27,6 +27,13 @@ return [
         'delete-title' => 'Delete Account Request',
     ],
 
+    'notification' => [
+        'account-delete' => 'has requested to delete his/her account.',
+        'delete-title' => 'Delete Account Request',
+        'registration-title' => 'New Registration',
+        'registration' => 'has Registered'
+    ],
+
     'localization' => [
         'invalid' => 'Invalid Language Selected!',
         'required' => 'X-localization header is required'

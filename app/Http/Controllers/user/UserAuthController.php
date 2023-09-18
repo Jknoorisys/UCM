@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 
 use Carbon\Carbon;
 use App\Libraries\Services;
+use App\Notifications\AdminNotification;
 
 class UserAuthController extends Controller
 {
@@ -102,10 +103,8 @@ class UserAuthController extends Controller
     public function verifyOTP(Request $req)
     {
         $validator = Validator::make($req->all(), [
-           
             'email_otp'   => 'required',
             'id'          => ['required','alpha_dash', Rule::notIn('undefined')]
-
         ]);
 
         if ($validator->fails()) {
@@ -124,6 +123,14 @@ class UserAuthController extends Controller
             {
                 $verificationCode   =  DB::table('users')->where('otp', '=', $otp)->where('id', '=', $id)->update(['is_verified' => 'yes', 'updated_at' => Carbon::now()]);
                 if ($verificationCode) {
+                     $user = User::find($id);
+
+                     $message = [
+                        'title' => trans('msg.notification.registration-title'),
+                        'msg'   => $user->fname.$user->lname.' '.trans('msg.notification.registration')
+                     ];
+
+                     $user->notify(new AdminNotification($message, $user));
                     return response()->json([
                         'status'    => 'success',
                         'message'   =>  trans('msg.registration.success'),

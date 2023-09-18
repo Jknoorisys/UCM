@@ -106,13 +106,11 @@ class UserProfileController extends Controller
                 return response()->json([
                         'status'    => 'success',
                         'message'   => trans('msg.delete.email-sent'),
-                        'data'      => $user
                 ], 200);
             } else {
                 return response()->json([
                         'status'    => 'failed',
                         'message'   => trans('msg.delete.email-failed'),
-                        'data'      => $user
                 ], 200);
             }
         } catch (\Throwable $e) {

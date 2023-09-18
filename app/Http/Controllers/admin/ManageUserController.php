@@ -152,13 +152,11 @@ class ManageUserController extends Controller
                 return response()->json([
                         'status'    => 'success',
                         'message'   => trans('msg.delete.success'),
-                        'data'      => $user
                 ], 200);
             } else {
                 return response()->json([
                         'status'    => 'failed',
                         'message'   => trans('msg.delete.failed'),
-                        'data'      => $user
                 ], 200);
             }
         } catch (\Throwable $e) {

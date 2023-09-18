@@ -53,7 +53,7 @@ class AdminNotification extends Notification
     {
         return [
             'user_id'   => $this->user->id,
-            'name'      => $this->user->name,
+            'name'      => $this->user->fname.' '.$this->user->lname,
             'email'     => $this->user->email,
             'title'     => $this->message['title'],
             'msg'       => $this->message['msg'],

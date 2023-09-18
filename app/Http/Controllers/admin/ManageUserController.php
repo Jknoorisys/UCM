@@ -121,62 +121,6 @@ class ManageUserController extends Controller
         }
     }
 
-    // By Javeriya Kauser
-    public function userDelete(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'user_id'       => ['required', 'alpha_dash', Rule::notIn('undefined')],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(
-                [
-                    'status'    => 'failed',
-                    'errors'    =>  $validator->errors(),
-                    'message'   =>  trans('msg.validation'),
-                ],
-                400
-            );
-        }
-
-        try {
-            $user_id = $request->user_id;
-            $user  = AuthUser($user_id);
-            if (empty($user)) {
-                return response()->json([
-                    'status'    => 'failed',
-                    'message'   =>  trans('msg.delete.not-found'),
-                ], 400);
-            }
-
-            if (!empty($user) && $user->status != 'active') {
-                return response()->json([
-                    'status'    => 'failed',
-                    'message'   =>  trans('msg.details.inactive'),
-                ], 400);
-            }
-
-            $delete = $user->forceDelete();
-            if ($delete) {
-                return response()->json([
-                    'status'    => 'success',
-                    'message'   => trans('msg.delete.success'),
-                ], 200);
-            } else {
-                return response()->json([
-                    'status'    => 'failed',
-                    'message'   => trans('msg.delete.failed'),
-                ], 200);
-            }
-        } catch (\Throwable $e) {
-            return response()->json([
-                'status'  => 'failed',
-                'message' =>  trans('msg.error'),
-                'error'   => $e->getMessage()
-            ], 500);
-        }
-    }
-
     public function userStatusChange(Request $req)
     {
         $validator = Validator::make($req->all(), [
@@ -240,6 +184,62 @@ class ManageUserController extends Controller
             return response()->json([
                 'status'  => 'failed',
                 'message' =>  __('msg.error'),
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // By Javeriya Kauser
+    public function userDelete(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id'       => ['required', 'alpha_dash', Rule::notIn('undefined')],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'status'    => 'failed',
+                    'errors'    =>  $validator->errors(),
+                    'message'   =>  trans('msg.validation'),
+                ],
+                400
+            );
+        }
+
+        try {
+            $user_id = $request->user_id;
+            $user  = AuthUser($user_id);
+            if (empty($user)) {
+                return response()->json([
+                    'status'    => 'failed',
+                    'message'   =>  trans('msg.delete.not-found'),
+                ], 400);
+            }
+
+            if (!empty($user) && $user->status != 'active') {
+                return response()->json([
+                    'status'    => 'failed',
+                    'message'   =>  trans('msg.details.inactive'),
+                ], 400);
+            }
+
+            $delete = $user->forceDelete();
+            if ($delete) {
+                return response()->json([
+                    'status'    => 'success',
+                    'message'   => trans('msg.delete.success'),
+                ], 200);
+            } else {
+                return response()->json([
+                    'status'    => 'failed',
+                    'message'   => trans('msg.delete.failed'),
+                ], 200);
+            }
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status'  => 'failed',
+                'message' =>  trans('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }

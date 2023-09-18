@@ -34,6 +34,8 @@ Route::middleware(['localization'])->group(function () {
                 Route::post('view' , [ManageUserController::class, 'userDetails']);
                 Route::post('change-status' , [ManageUserController::class, 'userStatusChange']);
                 Route::post('delete' , [ManageUserController::class, 'userDelete']);
+                Route::post('getUserList' , [ManageUserController::class, 'getUserList']);
+                Route::post('getUserProfile' , [ManageUserController::class, 'getUserProfile']);
             });
         });
     });

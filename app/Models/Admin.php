@@ -27,6 +27,7 @@ class Admin extends Model implements JWTSubject
         'phone',
         'email',
         'password',
+        'percent'
     ];
 
     /**

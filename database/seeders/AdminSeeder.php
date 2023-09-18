@@ -19,6 +19,7 @@ class AdminSeeder extends Seeder
             'phone' => '9685741235',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('Admin@123'),
+            'percent' => 10.00,
         ]);
     }
 }

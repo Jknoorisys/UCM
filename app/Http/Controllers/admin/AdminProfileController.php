@@ -110,5 +110,52 @@ class AdminProfileController extends Controller
         }
     }
 
-    
+    // By Javeriya Kauser
+    public function updateBudgetPercentage(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'percent'   => ['required', Rule::notIn('undefined')],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status'    => 'failed',
+                'errors'    =>  $validator->errors(),
+                'message'   =>  trans('msg.validation'),
+            ], 400);
+        }
+
+        try {
+            $admin = Admin::where('id', '=', $request->admin_id)->first();
+            if (empty($admin)) {
+                return response()->json([
+                    'status'    => 'success',
+                    'message'   =>  trans('msg.update.not-found'),
+                ], 200);
+            }
+
+            $admin->percent = $request->percent;
+            $update = $admin->save();
+
+            if ($update) {
+                $adminDetails = Admin::where('id', '=', $request->admin_id)->first();
+                return response()->json([
+                    'status'    => 'success',
+                    'data'      => $adminDetails,
+                    'message'   =>  trans('msg.update.success'),
+                ], 200);
+            } else {
+                return response()->json([
+                    'status'    => 'failed',
+                    'message'   =>  trans('msg.update.failed'),
+                ], 400);
+            }
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status'  => 'failed',
+                'message' =>  trans('msg.error'),
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
 }

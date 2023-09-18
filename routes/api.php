@@ -28,6 +28,7 @@ Route::middleware(['localization'])->group(function () {
         Route::group(['middleware' => 'jwt.verify'], function () {
             Route::post('changepassword', [AdminProfileController::class, 'changePassword']);
             Route::post('getProfile', [AdminProfileController::class, 'getProfile']);
+            Route::post('update-percent' , [AdminProfileController::class, 'updateBudgetPercentage']);
 
             Route::prefix('users')->group(function () {
                 Route::post('list' , [ManageUserController::class, 'getUserList']);
@@ -35,6 +36,7 @@ Route::middleware(['localization'])->group(function () {
                 Route::post('change-status' , [ManageUserController::class, 'userStatusChange']);
                 Route::post('delete' , [ManageUserController::class, 'userDelete']);
             });
+
         });
     });
 

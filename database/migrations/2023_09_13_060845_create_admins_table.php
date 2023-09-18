@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('photo');
             $table->string('phone')->unique();
             $table->string('email')->unique();
+            $table->float('percent');
             $table->string('password');
             $table->timestamps();
         });

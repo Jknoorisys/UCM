@@ -23,6 +23,7 @@ return [
         'registerus' => 'Registered with us!',
         'otp_msg' => 'Your One time Password to Complete your Registrations is',
         'resendotp' => 'OTP Resent successfuly',
+        'account-delete' => 'has request to delete his/her account.',
     ],
 
     'localization' => [
@@ -86,6 +87,7 @@ return [
         'success' => 'Details Updated Successully',
         'failed'  => 'Unable to Update, please try again...',
         'not-found' => 'User Not Found, Please Register First...',
+        'inactive' => 'Account blocked by Admin',
     ],
 
     'list' => [
@@ -98,6 +100,16 @@ return [
         'success' => 'Details Fetched Successully',
         'failed'  => 'No Details Found',
         'not-found' => 'User Not Found, Please Register First...',
+        'inactive' => 'Account blocked by Admin',
+    ],
+
+    'delete' => [
+        'success' => 'User Deleted Successully',
+        'failed'  => 'Unable to Delete User, please try again...',
+        'not-found' => 'User Not Found, Please Register First...',
+        'inactive' => 'Account blocked by Admin',
+        'email-sent' => 'Delete Account Request Sent',
+        'email-failed' => 'Unable to send delete account request, please try again...'
     ],
     
     'admin' => [

@@ -67,6 +67,7 @@ class UserProfileController extends Controller
         }
     }
 
+    
     // By Javeriya Kauser
     public function deleteAccount(Request $request) {
         $validator = Validator::make($request->all(), [

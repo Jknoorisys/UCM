@@ -56,6 +56,7 @@ return [
         'not-verified' => 'Email not Verified, please verify it firts...',
         'not-social' => 'Unable to Find Social Account',
         'invalid-social' => 'Social Id Does Not Match, Please try again...',
+        'incmail' => 'Invalid Email Address',
     ],
 
     'reset-password' => [
@@ -109,5 +110,12 @@ return [
         'inactive' => 'Account blocked by Admin',
         'email-sent' => 'Delete Account Request Sent',
         'email-failed' => 'Unable to send delete account request, please try again...'
+    ],
+    
+    'admin' => [
+        'get-users' => [
+            'success' => 'User List',
+            'failure' => 'No User Found',
+        ],
     ],
 ];

@@ -24,6 +24,7 @@ return [
         'otp_msg' => 'Your One time Password to Complete your Registrations is',
         'resendotp' => 'OTP Resent successfuly',
         'account-delete' => 'has request to delete his/her account.',
+        'delete-title' => 'Delete Account Request',
     ],
 
     'localization' => [

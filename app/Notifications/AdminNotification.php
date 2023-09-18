@@ -7,16 +7,16 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class DeleteAccountRequest extends Notification
+class AdminNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($user)
+    public function __construct($message)
     {
-        $this->user  = $user;
+        $this->message = $message;
     }
 
     /**
@@ -26,7 +26,7 @@ class DeleteAccountRequest extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail','database'];
+        return ['database'];
     }
 
     /**
@@ -35,8 +35,9 @@ class DeleteAccountRequest extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->greeting(__('msg.Hi').'!')
-                    ->line($this->user->fname.' '.$this->user->lname.' '.trans('msg.email.account-delete'));
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
     }
 
     /**
@@ -50,8 +51,8 @@ class DeleteAccountRequest extends Notification
             'user_id'   => $this->user->id,
             'name'      => $this->user->name,
             'email'     => $this->user->email,
-            'title'     => ('msg.email.delete-title'),
-            'msg'       => $this->user->fname.' '.$this->user->lname.' '.trans('msg.email.account-delete'),
+            'title'     => $this->message['title'],
+            'msg'       => $this->message['msg'],
             'datetime'  => date('Y-m-d h:i:s'),
         ];
     }

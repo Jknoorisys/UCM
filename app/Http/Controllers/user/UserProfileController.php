@@ -71,7 +71,7 @@ class UserProfileController extends Controller
     // By Javeriya Kauser
     public function deleteAccount(Request $request) {
         $validator = Validator::make($request->all(), [
-            'user_id'       => ['required|alpha_dash', Rule::notIn('undefined')],
+            'user_id'       => ['required','alpha_dash', Rule::notIn('undefined')],
         ]);
 
         if ($validator->fails()) {
@@ -100,7 +100,7 @@ class UserProfileController extends Controller
                ], 400);
             }
 
-            $admin = Admin::find(1);
+            $admin = Admin::first();
             $deleteRequest = $admin->notify(new DeleteAccountRequest($user));
             if ($deleteRequest) {
                 return response()->json([

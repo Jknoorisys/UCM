@@ -59,7 +59,7 @@ function snapchatRefreshToken($user_id) {
 
         $update = SnapchatTokens::where('user_id', '=', $user_id)->update($snap_tokens);
 
-        return true;
+        return $responseData;
     } else {
         return false;
     }

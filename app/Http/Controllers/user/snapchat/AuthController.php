@@ -118,7 +118,7 @@ class AuthController extends Controller
             $client = new Client();
 
             $user_id     = $request->user_id;
-            // return snapchatRefreshToken($user_id);
+            return snapchatRefreshToken($user_id);
             $auth_code   = $request->auth_code;
 
             $user = AuthUser($user_id);

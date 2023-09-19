@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('app_id')->unique();
             $table->string('secret')->unique();
             $table->string('auth_code')->unique();
-            $table->string('access_token')->unique();
+            $table->text('access_token')->unique();
             $table->enum('status', ['unlinked', 'inprogress', 'linked'])->default('unlinked');
             $table->softDeletes();
             $table->timestamps();

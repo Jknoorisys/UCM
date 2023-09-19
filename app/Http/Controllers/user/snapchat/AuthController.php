@@ -10,8 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use function App\Helpers\AuthUser;
+use function App\Helpers\snapchatRefreshToken;
 
 class AuthController extends Controller
 {
@@ -113,7 +115,10 @@ class AuthController extends Controller
         } 
 
         try {
+            $client = new Client();
+
             $user_id     = $request->user_id;
+            // return snapchatRefreshToken($user_id);
             $auth_code   = $request->auth_code;
 
             $user = AuthUser($user_id);
@@ -125,44 +130,51 @@ class AuthController extends Controller
             }
 
             $tokens = $user->snapchatToken;
+            if (!empty($tokens) && (!empty($tokens->auth_code) && $tokens->auth_code == $auth_code)) {
+                return response()->json([
+                       'status'    => 'failed',
+                       'message'   =>  trans('msg.token.invalid'),
+               ], 400);
+            }
 
+            // Prepare the request parameters
             $data = [
-                'grant_type' => 'authorization_code',
+                'grant_type' => "authorization_code",
                 'client_id' => $tokens->client_id,
                 'client_secret' => $tokens->client_secret,
                 'code' => $auth_code,
                 'redirect_uri' => env('REDIRECT_URI'),
             ];
-            
-            $headers = [
-                'Content-Type' => 'application/x-www-form-urlencoded',
-            ];
 
             // Send a POST request to the Snapchat OAuth 2.0 endpoint
-            $response = Http::withHeaders($headers)->post('https://accounts.snapchat.com/login/oauth2/access_token', $data);
-            
-            $responseData = ($response->getBody());
-            return $responseData;
+            $response = $client->post('https://accounts.snapchat.com/login/oauth2/access_token', [
+                'form_params' => $data
+            ]);
 
             // Get the response body as JSON
-            if ($response) {
+            $responseBody = (string) $response->getBody();
+            $responseData = json_decode($responseBody, true); 
+
+            if ($responseData) {
                 
                 $snap_tokens = [
                     'auth_code' => $auth_code,
-                    'access_token' => ''
+                    'access_token' => $responseData['access_token'],
+                    'refresh_token' => $responseData['refresh_token'],
+                    'status'        => 'linked'
                 ];
 
                 $update = SnapchatTokens::where('user_id', '=', $user_id)->update($snap_tokens);
 
                 return response()->json([
                        'status'    => 'failed',
-                       'message'   =>  trans('msg.auth.success'),
-                       'data'      => $response
+                       'message'   =>  trans('msg.token.success'),
+                       'data'      => $responseData
                ], 400);
             } else {
                 return response()->json([
                        'status'    => 'failed',
-                       'message'   =>  trans('msg.auth.failed'),
+                       'message'   =>  trans('msg.token.failed'),
                ], 400);
             }
         } catch (\Throwable $e) {
@@ -173,4 +185,5 @@ class AuthController extends Controller
             ], 500);
         }
     }
+    
 }

@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('client_id')->unique();
             $table->string('client_secret')->unique();
             $table->string('auth_code')->unique();
-            $table->string('access_token')->unique();
-            $table->string('refresh_token')->unique();
+            $table->text('access_token')->unique();
+            $table->text('refresh_token')->unique();
             $table->enum('status', ['unlinked', 'inprogress', 'linked'])->default('unlinked');
             $table->softDeletes();
             $table->timestamps();

@@ -138,4 +138,10 @@ return [
         'success' => 'Auth Code Generated Successfully',
         'failed'  => 'Unable to Generate Auth Code, please try again...'
     ],
+
+    'token' => [
+        'success' => 'Access Token Generated Successfully',
+        'failed'  => 'Unable to Generate Access Token, please try again...',
+        'invalid' => 'Auth Code Already Used'
+    ],
 ];

@@ -62,6 +62,10 @@ Route::middleware(['localization'])->group(function () {
             // By Javeriya Kauser
             Route::post('delete-account', [UserProfileController::class, 'deleteAccount']);
             Route::post('notifications', [UserProfileController::class, 'getNotifications']);
+
+            Route::prefix('snapchat')->group(function () {
+                    // Matches The "/url/users" URL
+            });
         });
     });
 });

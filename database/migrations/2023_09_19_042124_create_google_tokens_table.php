@@ -15,11 +15,11 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('organization_id')->unique();
-            $table->string('adaccount_id')->unique();
-            $table->string('client_id')->unique();
-            $table->string('client_secret')->unique();
-            $table->string('auth_code')->unique();
+            $table->text('organization_id')->unique();
+            $table->text('adaccount_id')->unique();
+            $table->text('client_id')->unique();
+            $table->text('client_secret')->unique();
+            $table->text('auth_code')->unique();
             $table->text('access_token')->unique();
             $table->text('refresh_token')->unique();
             $table->enum('status', ['unlinked', 'inprogress', 'linked'])->default('unlinked');

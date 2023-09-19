@@ -134,8 +134,12 @@ class AuthController extends Controller
                 'redirect_uri' => env('REDIRECT_URI'),
             ];
             
+            $headers = [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ];
+
             // Send a POST request to the Snapchat OAuth 2.0 endpoint
-            $response = Http::post('https://accounts.snapchat.com/login/oauth2/access_token', $data);
+            $response = Http::withHeaders($headers)->post('https://accounts.snapchat.com/login/oauth2/access_token', $data);
             
             $responseData = ($response->getBody());
             return $responseData;

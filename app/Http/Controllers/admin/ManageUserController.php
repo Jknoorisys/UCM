@@ -21,15 +21,13 @@ class ManageUserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(
-                [
+            return response()->json([
                     'status'    => 'failed',
+                    'message'   =>  trans('msg.validation'),
                     'errors'    =>  $validator->errors(),
-                    'message'   =>  __('msg.validation'),
-                ],
-                400
+                ], 400
             );
-        }
+        } 
 
         try {
             $per_page = 10;
@@ -80,15 +78,13 @@ class ManageUserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(
-                [
+            return response()->json([
                     'status'    => 'failed',
+                    'message'   =>  trans('msg.validation'),
                     'errors'    =>  $validator->errors(),
-                    'message'   =>  __('msg.validation'),
-                ],
-                400
+                ], 400
             );
-        }
+        } 
 
         try {
 
@@ -129,15 +125,13 @@ class ManageUserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(
-                [
+            return response()->json([
                     'status'    => 'failed',
+                    'message'   =>  trans('msg.validation'),
                     'errors'    =>  $validator->errors(),
-                    'message'   =>  __('msg.validation'),
-                ],
-                400
+                ], 400
             );
-        }
+        } 
 
         try {
             $user_id = $req->user_id;
@@ -197,15 +191,13 @@ class ManageUserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(
-                [
+            return response()->json([
                     'status'    => 'failed',
-                    'errors'    =>  $validator->errors(),
                     'message'   =>  trans('msg.validation'),
-                ],
-                400
+                    'errors'    =>  $validator->errors(),
+                ], 400
             );
-        }
+        } 
 
         try {
             $user_id = $request->user_id;

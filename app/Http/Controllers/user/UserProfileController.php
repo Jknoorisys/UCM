@@ -76,22 +76,16 @@ class UserProfileController extends Controller
         if ($validator->fails()) {
             return response()->json([
                     'status'    => 'failed',
-                    'errors'    =>  $validator->errors(),
                     'message'   =>  trans('msg.validation'),
+                    'errors'    =>  $validator->errors(),
                 ], 400
             );
         } 
 
         try {
             $user_id = $request->user_id;
+            
             $user  = AuthUser($user_id);
-            if (empty($user)) {
-                 return response()->json([
-                        'status'    => 'failed',
-                        'message'   =>  trans('msg.delete.not-found'),
-                ], 400);
-            }
-
             if (!empty($user) && $user->status != 'active') {
                 return response()->json([
                        'status'    => 'failed',
@@ -130,8 +124,8 @@ class UserProfileController extends Controller
         if ($validator->fails()) {
             return response()->json([
                     'status'    => 'failed',
-                    'errors'    =>  $validator->errors(),
                     'message'   =>  trans('msg.validation'),
+                    'errors'    =>  $validator->errors(),
                 ], 400
             );
         } 
@@ -142,13 +136,6 @@ class UserProfileController extends Controller
 
             $user_id = $request->user_id;
             $user  = AuthUser($user_id);
-            if (empty($user)) {
-                 return response()->json([
-                        'status'    => 'failed',
-                        'message'   =>  trans('msg.details.not-found'),
-                ], 400);
-            }
-
             if (!empty($user) && $user->status != 'active') {
                 return response()->json([
                        'status'    => 'failed',

@@ -27,8 +27,8 @@ class AdminProfileController extends Controller
         if ($validator->fails()) {
             return response()->json([
                     'status'    => 'failed',
+                    'message'   =>  trans('msg.validation'),
                     'errors'    =>  $validator->errors(),
-                    'message'   =>  __('msg.validation'),
                 ], 400
             );
         } 
@@ -79,13 +79,13 @@ class AdminProfileController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(
-                [
+            return response()->json([
                     'status'    => 'failed',
+                    'message'   =>  trans('msg.validation'),
                     'errors'    =>  $validator->errors(),
-                    'message'   =>  __('msg.validation'),
-                ],400);
-        }
+                ], 400
+            );
+        } 
 
         try {
             $admin = Admin::where('id', '=', $req->admin_id)->first();
@@ -121,11 +121,12 @@ class AdminProfileController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'status'    => 'failed',
-                'errors'    =>  $validator->errors(),
-                'message'   =>  trans('msg.validation'),
-            ], 400);
-        }
+                    'status'    => 'failed',
+                    'message'   =>  trans('msg.validation'),
+                    'errors'    =>  $validator->errors(),
+                ], 400
+            );
+        } 
 
         try {
             $admin = Admin::where('id', '=', $request->admin_id)->first();
@@ -169,8 +170,8 @@ class AdminProfileController extends Controller
         if ($validator->fails()) {
             return response()->json([
                     'status'    => 'failed',
-                    'errors'    =>  $validator->errors(),
                     'message'   =>  trans('msg.validation'),
+                    'errors'    =>  $validator->errors(),
                 ], 400
             );
         } 
@@ -229,8 +230,8 @@ class AdminProfileController extends Controller
         if ($validator->fails()) {
             return response()->json([
                     'status'    => 'failed',
-                    'errors'    =>  $validator->errors(),
                     'message'   =>  trans('msg.validation'),
+                    'errors'    =>  $validator->errors(),
                 ], 400
             );
         } 

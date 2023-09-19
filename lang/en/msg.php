@@ -133,4 +133,9 @@ return [
             ''
         ],
     ],
+
+    'auth' => [
+        'success' => 'Auth Code Generated Successfully',
+        'failed'  => 'Unable to Generate Auth Code, please try again...'
+    ],
 ];

@@ -231,8 +231,8 @@ class UserAuthController extends Controller
         if ($validator->fails()) {
             return response()->json([
                     'status'    => 'failed',
-                    'errors'    =>  $validator->errors(),
                     'message'   =>  trans('msg.validation'),
+                    'errors'    =>  $validator->errors(),
                 ], 400
             );
         } 
@@ -569,14 +569,19 @@ class UserAuthController extends Controller
             'social_id'     => 'required',
         ]);
 
+        foreach ($validator->errors()->messages() as $key => $value) {
+            // if($key == 'email')
+                $key = 'error_message';
+                $errors[$key] = is_array($value) ? implode(',', $value) : $value;
+        }
+        
         if ($validator->fails()) {
             return response()->json([
-                    'status'    => 'failed',
-                    'errors'    =>  $validator->errors(),
-                    'message'   =>  trans('msg.validation'),
-                ], 400
-            );
-        } 
+                'status'    => 'failed',
+                'message'   => $errors['error_message'] ? $errors['error_message'] : __('msg.validation'),
+                'errors'    => $validator->errors()
+            ], 400);
+        }
 
         try {
             $service = new Services();

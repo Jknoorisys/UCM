@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\AdminAuthController;
 use App\Http\Controllers\admin\AdminProfileController;
+use App\Http\Controllers\admin\ManageNotifications;
 use App\Http\Controllers\admin\ManageUserController;
 use App\Http\Controllers\user\snapchat\AuthController as SnapchatAuthController;
 use App\Http\Controllers\user\tiktok\AuthController as TiktokAuthController;
@@ -25,15 +26,23 @@ Route::middleware(['localization'])->group(function () {
 
     // Admin Panel APIs
     Route::prefix('admin')->group(function () {
+
+        // By Aaisha Shaikh
         Route::post('login' , [AdminAuthController::class, 'login']);
 
         Route::group(['middleware' => 'jwt.verify'], function () {
+            // Admin profile By Aasiha Shaikh
             Route::post('changepassword', [AdminProfileController::class, 'changePassword']);
             Route::post('getProfile', [AdminProfileController::class, 'getProfile']);
-            Route::post('update-percent' , [AdminProfileController::class, 'updateBudgetPercentage']);
-            Route::post('notifications', [AdminProfileController::class, 'getNotifications']);
-            Route::post('send-notification', [AdminProfileController::class, 'sendNotification']);
 
+            // By Javeriya Kauser
+            Route::post('update-percent' , [AdminProfileController::class, 'updateBudgetPercentage']);
+
+            // Manage Notifications By Javeriya Kauser
+            Route::post('notifications', [ManageNotifications::class, 'getNotifications']);
+            Route::post('send-notification', [ManageNotifications::class, 'sendNotification']);
+
+            // Manage Users By Aasiha Shaikh
             Route::prefix('users')->group(function () {
                 Route::post('list' , [ManageUserController::class, 'getUserList']);
                 Route::post('view' , [ManageUserController::class, 'getUserProfile']);

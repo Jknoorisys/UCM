@@ -39,7 +39,8 @@ class TiktokTokens extends Model
      */
     protected $hidden = [
         'access_token',
-        'auth_code'
+        'auth_code',
+        'auth_url'
     ];
 
     /**

@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\admin\AdminAuthController;
 use App\Http\Controllers\admin\AdminProfileController;
+use App\Http\Controllers\admin\ManageContactUs;
 use App\Http\Controllers\admin\ManageNotifications;
 use App\Http\Controllers\admin\ManageUserController;
+use App\Http\Controllers\user\ContactUsContoller;
 use App\Http\Controllers\user\snapchat\AuthController as SnapchatAuthController;
 use App\Http\Controllers\user\tiktok\AuthController as TiktokAuthController;
 use App\Http\Controllers\user\UserAuthController;
@@ -42,6 +44,9 @@ Route::middleware(['localization'])->group(function () {
             Route::post('notifications', [ManageNotifications::class, 'getNotifications']);
             Route::post('send-notification', [ManageNotifications::class, 'sendNotification']);
 
+            // Manage Contact Us By Javeriya Kauser
+            Route::post('contact-us', [ManageContactUs::class, 'getContactUs']);
+
             // Manage Users By Aasiha Shaikh
             Route::prefix('users')->group(function () {
                 Route::post('list' , [ManageUserController::class, 'getUserList']);
@@ -57,6 +62,7 @@ Route::middleware(['localization'])->group(function () {
         // By Javeriya Kauser
         Route::post('social-register' , [UserAuthController::class, 'socialRegistration']);
         Route::post('social-login' , [UserAuthController::class, 'socialLogin']);
+        Route::post('contact-us', [ContactUsContoller::class, 'contactUs']);
 
         // By Aaisha Shaikh
         Route::post('register' , [UserAuthController::class, 'register']);

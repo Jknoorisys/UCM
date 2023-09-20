@@ -39,9 +39,14 @@ class GoogleTokens extends Model
      * @var array<int, string>
      */
     protected $hidden = [
+        'client_id',
+        'client_secret',
+        'auth_code',
         'access_token',
         'refresh_token',
-        'auth_code'
+        'deleted_at',
+        'created_at',
+        'updated_at'
     ];
 
     /**

@@ -33,8 +33,7 @@ class ManageUserController extends Controller
             $per_page = 10;
             $page_number = $req->input(key: 'page_number', default: 1);
 
-            $user_id = $req->user_id;
-            $user  = User::where(['is_verified', '=', 'yes']);
+            $user  = User::where('is_verified', '=', 'yes');
             $search = $req->search ? $req->search : '';
 
             if (!empty($search)) {

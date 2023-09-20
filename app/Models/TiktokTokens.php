@@ -24,6 +24,7 @@ class TiktokTokens extends Model
     protected $fillable = [
         'user_id',
         'advertiser_id',
+        'auth_url',
         'app_id',
         'secret',
         'auth_code',

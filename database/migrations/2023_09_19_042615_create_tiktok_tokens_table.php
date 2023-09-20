@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->text('advertiser_id')->unique();
+            $table->text('auth_url')->unique();
             $table->text('app_id')->unique();
             $table->text('secret')->unique();
             $table->text('auth_code')->unique();

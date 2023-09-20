@@ -29,8 +29,7 @@ class JWTmiddleware
         if (is_null($header) && is_null($token)) {
             return response()->json(
                 [
-                    'status'       =>  "failed1",
-                    'errors'       =>  "",
+                    'status'       =>  "failed",
                     'message'      =>  trans('msg.jwt.TokenNotSet'),
                 ],
                 Response::HTTP_UNAUTHORIZED
@@ -46,8 +45,7 @@ class JWTmiddleware
 
                 return response()->json(
                     [
-                        'status'       =>  "failed2",
-                        'errors'       =>  "",
+                        'status'       =>  "failed",
                         'message'      =>  trans('msg.jwt.InvalidToken'),
                     ],
                     Response::HTTP_UNAUTHORIZED
@@ -57,8 +55,7 @@ class JWTmiddleware
 
                 return response()->json(
                     [
-                        'status'       =>  "failed3",
-                        'errors'       =>  "",
+                        'status'       =>  "failed",
                         'message'      =>  trans('msg.jwt.expiredToken'),
                     ],
                     Response::HTTP_UNAUTHORIZED
@@ -67,8 +64,7 @@ class JWTmiddleware
             } else {
                 return response()->json(
                     [
-                        'status'       =>  "failed4",
-                        'errors'       =>  "",
+                        'status'       =>  "failed",
                         'message'      =>  trans('msg.jwt.TokenNotFound'),
                     ],
                     Response::HTTP_BAD_REQUEST

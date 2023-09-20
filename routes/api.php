@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\AdminAuthController;
 use App\Http\Controllers\admin\AdminProfileController;
 use App\Http\Controllers\admin\ManageUserController;
 use App\Http\Controllers\user\snapchat\AuthController as SnapchatAuthController;
+use App\Http\Controllers\user\tiktok\AuthController as TiktokAuthController;
 use App\Http\Controllers\user\UserAuthController;
 use App\Http\Controllers\user\UserProfileController;
 use Illuminate\Http\Request;
@@ -67,6 +68,11 @@ Route::middleware(['localization'])->group(function () {
             Route::prefix('snapchat')->group(function () {
                 Route::post('auth', [SnapchatAuthController::class, 'authorizeAccount']);
                 Route::post('generate-token', [SnapchatAuthController::class, 'generateToken']);
+            });
+
+            Route::prefix('tiktok')->group(function () {
+                Route::post('auth', [TiktokAuthController::class, 'authorizeAccount']);
+                Route::post('generate-token', [TiktokAuthController::class, 'generateToken']);
             });
         });
     });

@@ -31,7 +31,7 @@
             ], 400);
         }
 
-        $tokens = $user->snapchatToken;
+        $tokens = $user->snapchat;
 
         $data = [
             'grant_type' => 'refresh_token',

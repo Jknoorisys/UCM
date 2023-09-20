@@ -116,7 +116,7 @@ class AuthController extends Controller
                ], 400);
             }
 
-            $tokens = $user->tiktokToken;
+            $tokens = $user->tiktok;
             if (!empty($tokens) && (!empty($tokens->auth_code) && $tokens->auth_code == $auth_code)) {
                 return response()->json([
                        'status'    => 'failed',

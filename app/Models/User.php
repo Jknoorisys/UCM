@@ -69,22 +69,22 @@ class User extends Authenticatable  implements JWTSubject
         });
     }
     
-    public function snapchatToken(): HasOne
+    public function snapchat(): HasOne
     {
         return $this->hasOne(SnapchatTokens::class);
     }
 
-    public function tiktokToken(): HasOne
+    public function tiktok(): HasOne
     {
         return $this->hasOne(TiktokTokens::class);
     }
 
-    public function googleToken(): HasOne
+    public function google(): HasOne
     {
         return $this->hasOne(GoogleTokens::class);
     }
 
-    public function facebookToken(): HasOne
+    public function meta(): HasOne
     {
         return $this->hasOne(FacebookTokens::class);
     }

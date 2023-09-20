@@ -128,7 +128,7 @@ class AuthController extends Controller
                ], 400);
             }
 
-            $tokens = $user->snapchatToken;
+            $tokens = $user->snapchat;
             if (!empty($tokens) && (!empty($tokens->auth_code) && $tokens->auth_code == $auth_code)) {
                 return response()->json([
                        'status'    => 'failed',

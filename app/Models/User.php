@@ -79,6 +79,16 @@ class User extends Authenticatable  implements JWTSubject
         return $this->hasOne(TiktokTokens::class);
     }
 
+    public function googleToken(): HasOne
+    {
+        return $this->hasOne(GoogleTokens::class);
+    }
+
+    public function facebookToken(): HasOne
+    {
+        return $this->hasOne(FacebookTokens::class);
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -87,16 +97,6 @@ class User extends Authenticatable  implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    public function googleToken(): HasOne
-    {
-        return $this->hasOne(googleTokens::class);
-    }
-
-    public function facebookToken(): HasOne
-    {
-        return $this->hasOne(facebookTokens::class);
     }
 }
 

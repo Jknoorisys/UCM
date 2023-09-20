@@ -65,7 +65,7 @@ class ManageUserController extends Controller
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' =>  __('msg.error'),
+                'message' =>  trans('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -75,7 +75,6 @@ class ManageUserController extends Controller
     {
         $validator = Validator::make($req->all(), [
             'user_id' => ['required', 'alpha_dash', Rule::notIn('undefined')],
-
         ]);
 
         if ($validator->fails()) {
@@ -91,28 +90,23 @@ class ManageUserController extends Controller
 
             $user_id = $req->user_id;
             $user  = AuthUser($user_id);
+
             if (!empty($user)) {
-                return response()->json(
-                    [
-                        'status'    => 'success',
-                        'data' => $user,
-                        'message'   =>  __('msg.details.success'),
-                    ],
-                    200
-                );
+                return response()->json([
+                    'status'    => 'success',
+                    'data' => $user,
+                    'message'   =>  trans('msg.details.success'),
+                ],200);
             } else {
-                return response()->json(
-                    [
+                return response()->json([
                         'status'    => 'failed',
-                        'message'   =>  __('msg.details.not-found'),
-                    ],
-                    400
-                );
+                        'message'   =>  trans('msg.details.not-found'),
+                    ],400);
             }
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' =>  __('msg.error'),
+                'message' =>  trans('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -127,58 +121,49 @@ class ManageUserController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                    'status'    => 'failed',
-                    'message'   =>  trans('msg.validation'),
-                    'errors'    =>  $validator->errors(),
-                ], 400
-            );
+                'status'    => 'failed',
+                'message'   =>  trans('msg.validation'),
+                'errors'    =>  $validator->errors(),
+            ], 400);
         } 
 
         try {
             $user_id = $req->user_id;
+            $status = $req->status;
             $user  = AuthUser($user_id);
-            if (empty($user)) {
-                return response()->json([
-                    'status'    => 'failed',
-                    'message'   =>  __('msg.details.not-found'),
-                ], 400);
-            }
+            
+            $user->status = $status;
+            $update = $user->save();
 
-            if (!empty($user) && $user->status != 'active') {
-                $status = $req->status;
-                $user->status = $status;
-                $user->save();
-
-
-                $message = [
-                    'title' => 'Account Activated',
-                    'msg' => 'Your account has been activated by Admin',
-                ];
+            if ($update) {
+                if ($status == 'active') {
+                    $message = [
+                        'title' => 'Account Activated',
+                        'msg' => 'Your account has been activated by Admin',
+                    ];
+                } else {
+                    $message = [
+                        'title' => 'Account Deactivated',
+                        'msg' => 'Your account has been deactivated by Admin',
+                    ];
+                }
+                
                 $user->notify(new UserNotification($message));
 
                 return response()->json([
                     'status'    => 'success',
-                    'message'   =>  __('msg.admin.user-status.success'),
+                    'message'   =>  trans('msg.update.success'),
                 ], 200);
             } else {
-                $status = $req->status;
-                $user->status = $status;
-                $user->save();
-                $message = [
-                    'title' => 'Account Deactivated',
-                    'msg' => 'Your account has been deactivated by Admin',
-                ];
-                $user->notify(new UserNotification($message));
-
                 return response()->json([
-                    'status'    => 'success',
-                    'message'   =>  __('msg.admin.user-status.success'),
-                ], 200);
+                    'status'    => 'failed',
+                    'message'   =>  trans('msg.update.failed'),
+                ], 400);
             }
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' =>  __('msg.error'),
+                'message' =>  trans('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }

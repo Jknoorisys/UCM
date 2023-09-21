@@ -43,7 +43,9 @@ Route::middleware(['localization'])->group(function () {
 
             // Manage Notifications By Javeriya Kauser
             Route::post('notifications', [ManageNotifications::class, 'getNotifications']);
+            Route::post('unread-notifications', [ManageNotifications::class, 'getUnreadNotifications']);
             Route::post('send-notification', [ManageNotifications::class, 'sendNotification']);
+            Route::post('read-all-notifications', [ManageNotifications::class, 'readAllNotifications']);
 
             // Manage Contact Us By Javeriya Kauser
             Route::post('contact-us', [ManageContactUs::class, 'getContactUs']);

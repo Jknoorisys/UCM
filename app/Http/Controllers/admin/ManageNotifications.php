@@ -39,6 +39,65 @@ class ManageNotifications extends Controller
                 ], 400);
             }
 
+            $notifications = $admin->notifications()
+                                    ->offset(($page_number - 1) * $per_page)
+                                    ->limit($per_page)
+                                    ->get();
+
+            $total =  $admin->notifications()->count();                      
+            if (!$notifications->isEmpty()) {
+                $notification = [];
+                foreach ($notifications as $notify) {
+                    $notification[] = $notify->data;
+                }
+                return response()->json([
+                        'status'    => 'success',
+                        'message'   => trans('msg.list.success'),
+                        'total'     => $total,
+                        'data'      => $notification,
+                ], 200);
+            } else {
+                return response()->json([
+                        'status'    => 'success',
+                        'message'   => trans('msg.list.failed'),
+                        'data'      => $notifications
+                ], 200);
+            }
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status'  => 'failed',
+                'message' =>  trans('msg.error'),
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getUnreadNotifications(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'page_number'   => 'required||numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                    'status'    => 'failed',
+                    'message'   =>  trans('msg.validation'),
+                    'errors'    =>  $validator->errors(),
+                ], 400
+            );
+        } 
+
+        try {
+            $per_page = 10;
+            $page_number = $request->input(key:'page_number', default:1);
+
+            $admin  = Admin::first();
+            if (empty($admin)) {
+                 return response()->json([
+                        'status'    => 'failed',
+                        'message'   =>  trans('msg.details.not-found'),
+                ], 400);
+            }
+
             $notifications = $admin->unreadNotifications()
                                     ->offset(($page_number - 1) * $per_page)
                                     ->limit($per_page)
@@ -70,6 +129,41 @@ class ManageNotifications extends Controller
                 'error'   => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function readAllNotifications()
+    {
+        try {
+            $admin  = Admin::first();
+            if (empty($admin)) {
+                 return response()->json([
+                        'status'    => 'failed',
+                        'message'   =>  trans('msg.details.not-found'),
+                ], 400);
+            }
+
+            $notifications = $admin->unreadNotifications();
+
+            if ($notifications) {
+                $admin->unreadNotifications->markAsRead();
+                return response()->json([
+                        'status'    => 'success',
+                        'message'   => trans('msg.update.success'),
+                ], 200);
+            } else {
+                return response()->json([
+                        'status'    => 'success',
+                        'message'   => trans('msg.update.failed'),
+                ], 200);
+            }
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status'  => 'failed',
+                'message' =>  trans('msg.error'),
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+
     }
 
     public function sendNotification(Request $request) {

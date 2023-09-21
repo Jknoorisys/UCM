@@ -10,6 +10,7 @@ use App\Http\Controllers\user\snapchat\AuthController as SnapchatAuthController;
 use App\Http\Controllers\user\tiktok\AuthController as TiktokAuthController;
 use App\Http\Controllers\user\UserAuthController;
 use App\Http\Controllers\user\UserProfileController;
+use App\Http\Controllers\user\google\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -90,6 +91,10 @@ Route::middleware(['localization'])->group(function () {
                 Route::post('auth', [TiktokAuthController::class, 'authorizeAccount']);
                 Route::post('generate-token', [TiktokAuthController::class, 'generateToken']);
             });
+            Route::prefix('google')->group(function () {
+                // Matches The "/url/users" URL
+                Route::post('link_account',[AuthController::class,'main']);
+        });
         });
     });
 });

@@ -82,6 +82,8 @@ Route::middleware(['localization'])->group(function () {
             // By Javeriya Kauser
             Route::post('delete-account', [UserProfileController::class, 'deleteAccount']);
             Route::post('notifications', [UserProfileController::class, 'getNotifications']);
+            Route::post('unread-notifications', [UserProfileController::class, 'getUnreadNotifications']);
+            Route::post('read-all-notifications', [UserProfileController::class, 'readAllNotifications']);
             Route::post('linked-accounts', [UserProfileController::class, 'getLinkedAccounts']);
 
             Route::prefix('snapchat')->group(function () {

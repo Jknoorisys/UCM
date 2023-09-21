@@ -74,7 +74,6 @@ class UserAuthController extends Controller
                     'otp_msg'=> trans('msg.email.otp_msg')
                 ];
                 $email =  ['to'=> $req->email];
-                // echo json_encode($email['to']);exit;
                 $datamail = Mail::send('otpmail', $data, function ($message) use ($email) {
                     $message->to($email['to']);
                     $message->subject(__('msg.email.mailverification'));
@@ -330,7 +329,6 @@ class UserAuthController extends Controller
                     'otp_msg'=> trans('msg.email.otp_msg')
                 ];
                 $email =  ['to'=> $req->email];
-                // echo json_encode($email['to']);exit;
                 $datamail = Mail::send('forgotpassmail', $data, function ($message) use ($email) {
                     $message->to($email['to']);
                     $message->subject(trans('msg.email.mailverification'));
@@ -368,8 +366,7 @@ class UserAuthController extends Controller
     public function forgotPasswordValidate(Request $req)
     {
         $validator = Validator::make($req->all(), [
-            
-            'otp' => 'required',
+            'otp'        => 'required',
             'password'   => 'required|max:20||min:8',
             'confirm_password' => 'required|same:password',
         ]);
@@ -383,7 +380,6 @@ class UserAuthController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status'    => 'failed',
-                'errors'    =>  $validator->errors(),
                 'message'   =>  $errors['error_message'] ? $errors['error_message'] : __('msg.user.validation.fail'),
             ], 400 );
         }
@@ -391,7 +387,6 @@ class UserAuthController extends Controller
         try {
             $forgotpassUser = DB::table('password_reset_tokens')->where('token',$req->otp)->first();
             if ($forgotpassUser) {
-
                 $password = $req->password;
                 if ($password == $req->confirm_password) {
                     $updatedpassword = Hash::make($req->password);
@@ -434,9 +429,8 @@ class UserAuthController extends Controller
     {
         $validator = Validator::make($req->all(), [
             'user_id' => 'required',
-            'currentpassword' => 'required',
-            'newpassword'   => 'required',
-            'confirmpassword' => 'required|same:newpassword',
+            'old_password' => 'required',
+            'new_password'   => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -449,21 +443,20 @@ class UserAuthController extends Controller
 
         try {
             
-            $currentpassword = $req->currentpassword;
-            $newpassword = $req->newpassword;
-            $confirmpassword = $req->confirmpassword;
+            $old_password = $req->old_password;
+            $new_password = $req->new_password;
             $user  = user::where('id', '=', $req->user_id)->first();
 
             if(!empty($user)) 
             {
-                if (Hash::check($currentpassword,$user->password)) {
-                    $user->password = Hash::make($newpassword);
+                if (Hash::check($old_password, $user->password)) {
+                    $user->password = Hash::make($new_password);
                     $user->save();
                         return response()->json(
                             [
                                 'status'    => 'success',
-                                'data' => $user,
                                 'message'   =>   trans('msg.change-password.success'),
+                                'data'      => $user,
                             ],200);
                 }else {
                     return response()->json([

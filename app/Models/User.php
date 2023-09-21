@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+
 class User extends Authenticatable  implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;

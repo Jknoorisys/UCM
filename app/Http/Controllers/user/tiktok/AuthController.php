@@ -142,7 +142,7 @@ class AuthController extends Controller
                 
                 $tiktok_tokens = [
                     'auth_code' => $auth_code,
-                    'access_token' => $responseData['access_token'],
+                    'access_token' => $responseData['data']['access_token'],
                     'status'        => 'linked'
                 ];
 
@@ -151,7 +151,7 @@ class AuthController extends Controller
                 return response()->json([
                        'status'    => 'failed',
                        'message'   =>  trans('msg.token.success'),
-                       'data'      => $responseData
+                       'data'      => $responseData['data']
                ], 400);
             } else {
                 return response()->json([

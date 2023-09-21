@@ -27,12 +27,21 @@ class ManageContactUs extends Controller
             $per_page = 10;
             $page_number = $request->input(key:'page_number', default:1);
 
-            $contactUs = ContactUs::offset(($page_number - 1) * $per_page)
+            $search = $request->search ? $request->search : '';
+
+            $query = ContactUs::query();
+            if (!empty($search)) {
+                $query->where('name', 'LIKE', "%$search%")
+                    ->orWhere('email', 'LIKE', "%$search%")
+                    ->orWhere('phone', 'LIKE', "%$search%");
+            }
+
+            $contactUs = $query->offset(($page_number - 1) * $per_page)
                                     ->limit($per_page)
                                     ->get();
 
-            $total =  ContactUs::all()->count();       
-            if (!$contactUs->isEmpty()) {
+            $total =  $query->count();       
+            if ($contactUs) {
                 return response()->json([
                     'status'    => 'success',
                     'message'   => trans('msg.list.success'),

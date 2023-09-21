@@ -95,10 +95,11 @@ Route::middleware(['localization'])->group(function () {
                 Route::post('auth', [TiktokAuthController::class, 'authorizeAccount']);
                 Route::post('generate-token', [TiktokAuthController::class, 'generateToken']);
             });
+            
             Route::prefix('google')->group(function () {
                 // Matches The "/url/users" URL
                 Route::post('link_account',[AuthController::class,'main']);
-        });
+            });
         });
     });
 });

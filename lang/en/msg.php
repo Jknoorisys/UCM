@@ -33,7 +33,9 @@ return [
         'account-delete' => 'has requested to delete his/her account.',
         'delete-title' => 'Delete Account Request',
         'registration-title' => 'New Registration',
-        'registration' => 'has Registered'
+        'registration' => 'has Registered',
+        'contact-us-title' => 'New Contact Us Query',
+        'contact-us' => 'has Contacted You!'
     ],
 
     'localization' => [

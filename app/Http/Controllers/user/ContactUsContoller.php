@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\ContactUs;
 use App\Notifications\AdminNotification;
 use Illuminate\Http\Request;
@@ -39,6 +40,20 @@ class ContactUsContoller extends Controller
 
             if($insert)
             {
+                $admin = Admin::first();
+
+                $user = new \stdClass();
+                $user->id    = '';
+                $user->fname = $request->input('name');
+                $user->lname = '';
+                $user->email = $request->input('email');
+
+                $message = [
+                    'title' => trans('msg.notification.contact-us-title'),
+                    'msg'   => $request->name.' '.trans('msg.notification.contact-us')
+                 ];
+
+                 $admin->notify(new AdminNotification($message, $user));
                 return response()->json([
                     'status'    => 'success',
                     'message'   =>  trans('msg.add.success'),

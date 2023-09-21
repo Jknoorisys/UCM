@@ -14,7 +14,10 @@ use Illuminate\Support\Str;
 
 use Carbon\Carbon;
 use App\Libraries\Services;
+use App\Models\Admin;
 use App\Notifications\AdminNotification;
+
+use function App\Helpers\AuthUser;
 
 class UserAuthController extends Controller
 {
@@ -104,7 +107,7 @@ class UserAuthController extends Controller
     {
         $validator = Validator::make($req->all(), [
             'email_otp'   => 'required',
-            'id'          => ['required','alpha_dash', Rule::notIn('undefined')]
+            'user_id'     => ['required','alpha_dash', Rule::notIn('undefined')]
         ]);
 
         if ($validator->fails()) {
@@ -117,23 +120,25 @@ class UserAuthController extends Controller
 
         try {
             $otp = $req->email_otp;
-            $id = $req->id;
-            $match_otp = User::where('id', '=', $id)->where('otp', '=', $otp)->first();
-            if(!empty($match_otp))
+            $id = $req->user_id;
+
+            $user = AuthUser($id);
+            if($user->otp == $otp)
             {
                 $verificationCode   =  User::where('otp', '=', $otp)->where('id', '=', $id)->update(['is_verified' => 'yes', 'updated_at' => Carbon::now()]);
                 if ($verificationCode) {
-                     $user = User::find($id);
+                    $admin = Admin::first();
 
                      $message = [
                         'title' => trans('msg.notification.registration-title'),
                         'msg'   => $user->fname.' '.$user->lname.' '.trans('msg.notification.registration')
                      ];
 
-                     $user->notify(new AdminNotification($message, $user));
+                     $admin->notify(new AdminNotification($message, $user));
                     return response()->json([
                         'status'    => 'success',
-                        'message'   =>  trans('msg.registration.success'),
+                        'message'   => trans('msg.registration.success'),
+                        'data'      => $user
                     ], 200);
                 } else {
                     return response()->json([

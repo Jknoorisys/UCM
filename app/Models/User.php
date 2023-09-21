@@ -47,6 +47,7 @@ class User extends Authenticatable  implements JWTSubject
      */
     protected $hidden = [
         'password',
+        'deleted_at',
         // 'JWT_token',
         // 'otp'
     ];
@@ -69,14 +70,24 @@ class User extends Authenticatable  implements JWTSubject
         });
     }
     
-    public function snapchatToken(): HasOne
+    public function snapchat(): HasOne
     {
         return $this->hasOne(SnapchatTokens::class);
     }
 
-    public function tiktokToken(): HasOne
+    public function tiktok(): HasOne
     {
         return $this->hasOne(TiktokTokens::class);
+    }
+
+    public function google(): HasOne
+    {
+        return $this->hasOne(GoogleTokens::class);
+    }
+
+    public function meta(): HasOne
+    {
+        return $this->hasOne(FacebookTokens::class);
     }
 
     public function getJWTIdentifier()
@@ -87,16 +98,6 @@ class User extends Authenticatable  implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    public function googleToken(): HasOne
-    {
-        return $this->hasOne(googleTokens::class);
-    }
-
-    public function facebookToken(): HasOne
-    {
-        return $this->hasOne(facebookTokens::class);
     }
 }
 

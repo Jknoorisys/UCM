@@ -44,8 +44,8 @@ return [
     'jwt' => [
         'TokenNotSet' => 'Bearer Token Not Set',
         'InvalidToken' => 'Invalid Bearer Token',
-        'expiredToken' => 'Token Expired!',
-        'TokenNotFound' => 'Token Not Found'
+        'expiredToken' => 'Bearer Token Expired!',
+        'TokenNotFound' => 'Bearer Token Not Found'
     ],
 
     'registration' => [
@@ -132,5 +132,16 @@ return [
             'success' => 'User Status Changed Successfuly!',
             ''
         ],
+    ],
+
+    'auth' => [
+        'success' => 'Auth Code Generated Successfully',
+        'failed'  => 'Unable to Generate Auth Code, please try again...'
+    ],
+
+    'token' => [
+        'success' => 'Access Token Generated Successfully',
+        'failed'  => 'Unable to Generate Access Token, please try again...',
+        'invalid' => 'Auth Code Already Used'
     ],
 ];

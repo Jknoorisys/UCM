@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
-class GoogleToken extends Model
+
+class FacebookTokens extends Model
 {
     use HasFactory, Notifiable, SoftDeletes;
 
@@ -38,9 +39,14 @@ class GoogleToken extends Model
      * @var array<int, string>
      */
     protected $hidden = [
+        'client_id',
+        'client_secret',
+        'auth_code',
         'access_token',
         'refresh_token',
-        'auth_code'
+        'deleted_at',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -66,5 +72,3 @@ class GoogleToken extends Model
         return $this->belongsTo(User::class);
     }
 }
-
-

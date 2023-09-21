@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\user\snapchat;
+namespace App\Http\Controllers\user\tiktok;
 
 use App\Http\Controllers\Controller;
 use App\Models\SnapchatTokens;
+use App\Models\TiktokTokens;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,10 +21,10 @@ class AuthController extends Controller
     public function authorizeAccount(Request $request) {
         $validator = Validator::make($request->all(), [
             'user_id'           => ['required','alpha_dash', Rule::notIn('undefined')],
-            'organization_id'   => ['required', Rule::notIn('undefined')],
-            'adaccount_id'      => ['required', Rule::notIn('undefined')],
-            'client_id'         => ['required', Rule::notIn('undefined')],
-            'client_secret'     => ['required', Rule::notIn('undefined')],
+            'advertiser_id'     => ['required', Rule::notIn('undefined')],
+            'auth_url'          => ['required', Rule::notIn('undefined')],
+            'app_id'            => ['required', Rule::notIn('undefined')],
+            'secret'            => ['required', Rule::notIn('undefined')],
         ]);
 
         if ($validator->fails()) {
@@ -37,10 +38,10 @@ class AuthController extends Controller
 
         try {
             $user_id           = $request->user_id;
-            $organization_id   = $request->organization_id;
-            $adaccount_id      = $request->adaccount_id;
-            $client_id         = $request->client_id;
-            $client_secret     = $request->client_secret;
+            $advertiser_id     = $request->advertiser_id;
+            $auth_url          = $request->auth_url;
+            $app_id            = $request->app_id;
+            $secret            = $request->secret;
 
             $user = AuthUser($user_id);
             if (!empty($user) && $user->status != 'active') {
@@ -50,39 +51,26 @@ class AuthController extends Controller
                ], 400);
             }
 
-            $params = [
-                'client_id' => $client_id,
-                'redirect_uri' => env('REDIRECT_URI'),
-                'response_type' => 'code',
-                'scope' => 'snapchat-marketing-api',
-            ];
-            
-            $query_params = http_build_query($params);
-            // Send a POST request to the Snapchat OAuth 2.0 endpoint
-            $response = Http::get('https://accounts.snapchat.com/login/oauth2/authorize?'. $query_params);
-
-            $snap_tokens = [
+            $tiktok_tokens = [
                 'user_id' => $user_id,
-                'organization_id' => $organization_id,
-                'adaccount_id'    => $adaccount_id,
-                'client_id'       => $client_id,
-                'client_secret'   => $client_secret,
+                'advertiser_id'   => $advertiser_id,
+                'auth_url'        => $auth_url,
+                'app_id'          => $app_id,
+                'secret'          => $secret,
                 'status'          => 'inprogress'
             ];
 
-            $create = SnapchatTokens::updateOrCreate(
+            $create = TiktokTokens::updateOrCreate(
                 ['user_id' => $user_id], 
-                $snap_tokens          
+                $tiktok_tokens          
             );
             
             // Get the response body as JSON
             if ($create) {
-                $url = 'https://accounts.snapchat.com/login/oauth2/authorize?'. $query_params;
-
                 return response()->json([
                        'status'    => 'failed',
                        'message'   =>  trans('msg.auth.success'),
-                       'url'       => $url
+                       'url'       => $auth_url
                ], 400);
             } else {
                 return response()->json([
@@ -128,7 +116,7 @@ class AuthController extends Controller
                ], 400);
             }
 
-            $tokens = $user->snapchat;
+            $tokens = $user->tiktok;
             if (!empty($tokens) && (!empty($tokens->auth_code) && $tokens->auth_code == $auth_code)) {
                 return response()->json([
                        'status'    => 'failed',
@@ -138,17 +126,13 @@ class AuthController extends Controller
 
             // Prepare the request parameters
             $data = [
-                'grant_type' => "authorization_code",
-                'client_id' => $tokens->client_id,
-                'client_secret' => $tokens->client_secret,
-                'code' => $auth_code,
-                'redirect_uri' => env('REDIRECT_URI'),
+                'secret' => $tokens->secret,
+                'app_id' => $tokens->app_id,
+                'auth_code' => $auth_code,
             ];
 
             // Send a POST request to the Snapchat OAuth 2.0 endpoint
-            $response = $client->post('https://accounts.snapchat.com/login/oauth2/access_token', [
-                'form_params' => $data
-            ]);
+            $response = Http::post('https://business-api.tiktok.com/open_api/v1.3/oauth2/access_token/', $data);
 
             // Get the response body as JSON
             $responseBody = (string) $response->getBody();
@@ -156,19 +140,18 @@ class AuthController extends Controller
 
             if ($responseData) {
                 
-                $snap_tokens = [
+                $tiktok_tokens = [
                     'auth_code' => $auth_code,
-                    'access_token' => $responseData['access_token'],
-                    'refresh_token' => $responseData['refresh_token'],
+                    'access_token' => $responseData['data']['access_token'],
                     'status'        => 'linked'
                 ];
 
-                $update = SnapchatTokens::where('user_id', '=', $user_id)->update($snap_tokens);
+                $update = TiktokTokens::where('user_id', '=', $user_id)->update($tiktok_tokens);
 
                 return response()->json([
                        'status'    => 'failed',
                        'message'   =>  trans('msg.token.success'),
-                       'data'      => $responseData
+                       'data'      => $responseData['data']
                ], 400);
             } else {
                 return response()->json([

@@ -24,6 +24,7 @@ class TiktokTokens extends Model
     protected $fillable = [
         'user_id',
         'advertiser_id',
+        'auth_url',
         'app_id',
         'secret',
         'auth_code',
@@ -37,8 +38,14 @@ class TiktokTokens extends Model
      * @var array<int, string>
      */
     protected $hidden = [
+        'auth_url',
+        'app_id',
+        'secret',
+        'auth_code',
         'access_token',
-        'auth_code'
+        'deleted_at',
+        'created_at',
+        'updated_at'
     ];
 
     /**

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
-class SnapchatTokens extends Model
+class GoogleTokens extends Model
 {
     use HasFactory, Notifiable, SoftDeletes;
 

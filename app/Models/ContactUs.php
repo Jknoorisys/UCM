@@ -4,14 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
-class FacebookToken extends Model
-{
-    use HasFactory, Notifiable, SoftDeletes;
 
+class ContactUs extends Model
+{
+    use HasFactory;
     protected $primaryKey = 'id';
     public $incrementing = false;
 
@@ -21,15 +18,10 @@ class FacebookToken extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
-        'organization_id',
-        'adaccount_id',
-        'client_id',
-        'client_secret',
-        'auth_code',
-        'access_token',
-        'refresh_token',
-        'status',
+        'name',
+        'phone',
+        'email',
+        'message',
     ];
 
     /**
@@ -38,9 +30,7 @@ class FacebookToken extends Model
      * @var array<int, string>
      */
     protected $hidden = [
-        'access_token',
-        'refresh_token',
-        'auth_code'
+        'deleted_at',
     ];
 
     /**
@@ -60,10 +50,4 @@ class FacebookToken extends Model
             $model->id = (string) Str::uuid();
         });
     }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
 }

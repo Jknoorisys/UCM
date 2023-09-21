@@ -28,7 +28,7 @@ class UserProfileController extends Controller
                 [
                     'status'    => 'failed',
                     'errors'    =>  $validator->errors(),
-                    'message'   =>  __('msg.validation'),
+                    'message'   =>  trans('msg.validation'),
                 ],400
             );
         }
@@ -45,23 +45,21 @@ class UserProfileController extends Controller
             }
 
             if (!empty($user)) {
-                return response()->json(
-                    [
-                        'status'    => 'success',
-                        'data' => $user,
-                        'message'   =>  __('msg.details.success'),
-                    ],200);
+                return response()->json([
+                    'status'    => 'success',
+                    'message'   =>  trans('msg.details.success'),
+                    'data'      => $user,
+                ],200);
             } else {
-                return response()->json(
-                    [
-                        'status'    => 'failed',
-                        'message'   =>  __('msg.details.not-found'),
-                    ],400);
+                return response()->json([
+                    'status'    => 'failed',
+                    'message'   =>  trans('msg.details.not-found'),
+                ],400);
             }
         } catch (\Throwable $e) {
             return response()->json([
                 'status'  => 'failed',
-                'message' =>  __('msg.error'),
+                'message' =>  trans('msg.error'),
                 'error'   => $e->getMessage()
             ], 500);
         }
@@ -76,22 +74,16 @@ class UserProfileController extends Controller
         if ($validator->fails()) {
             return response()->json([
                     'status'    => 'failed',
-                    'errors'    =>  $validator->errors(),
                     'message'   =>  trans('msg.validation'),
+                    'errors'    =>  $validator->errors(),
                 ], 400
             );
         } 
 
         try {
             $user_id = $request->user_id;
+            
             $user  = AuthUser($user_id);
-            if (empty($user)) {
-                 return response()->json([
-                        'status'    => 'failed',
-                        'message'   =>  trans('msg.delete.not-found'),
-                ], 400);
-            }
-
             if (!empty($user) && $user->status != 'active') {
                 return response()->json([
                        'status'    => 'failed',
@@ -130,8 +122,8 @@ class UserProfileController extends Controller
         if ($validator->fails()) {
             return response()->json([
                     'status'    => 'failed',
-                    'errors'    =>  $validator->errors(),
                     'message'   =>  trans('msg.validation'),
+                    'errors'    =>  $validator->errors(),
                 ], 400
             );
         } 
@@ -142,13 +134,6 @@ class UserProfileController extends Controller
 
             $user_id = $request->user_id;
             $user  = AuthUser($user_id);
-            if (empty($user)) {
-                 return response()->json([
-                        'status'    => 'failed',
-                        'message'   =>  trans('msg.details.not-found'),
-                ], 400);
-            }
-
             if (!empty($user) && $user->status != 'active') {
                 return response()->json([
                        'status'    => 'failed',
@@ -180,6 +165,57 @@ class UserProfileController extends Controller
                         'status'    => 'success',
                         'message'   => trans('msg.list.failed'),
                         'data'      => $notifications
+                ], 200);
+            }
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status'  => 'failed',
+                'message' =>  trans('msg.error'),
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getLinkedAccounts(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'user_id'       => ['required','alpha_dash', Rule::notIn('undefined')],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                    'status'    => 'failed',
+                    'message'   =>  trans('msg.validation'),
+                    'errors'    =>  $validator->errors(),
+                ], 400
+            );
+        } 
+
+        try {
+            $user_id = $request->user_id;
+            
+            $user  = AuthUser($user_id);
+            if (!empty($user) && $user->status != 'active') {
+                return response()->json([
+                       'status'    => 'failed',
+                       'message'   =>  trans('msg.details.inactive'),
+               ], 400);
+            }
+
+            if ($user) {
+                $meta = $user->meta;
+                $google = $user->google;
+                $snapchat = $user->snapchat;
+                $tiktok = $user->tiktok;
+
+                return response()->json([
+                        'status'    => 'success',
+                        'message'   => trans('msg.details.success'),
+                        'data'      => $user
+                ], 200);
+            } else {
+                return response()->json([
+                        'status'    => 'failed',
+                        'message'   => trans('msg.details.failed'),
                 ], 200);
             }
         } catch (\Throwable $e) {
